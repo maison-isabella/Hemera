@@ -472,7 +472,7 @@ function drawLogin(){
 
   function doLogin(){
     var u=USERS.find(function(u){
-      return u.email.toLowerCase()===email.toLowerCase().trim()&&u.password===pass;
+      return u.email.toLowerCase()===email.toLowerCase().trim()&&u.password===pass.trim();
     });
     if(u){sessionStorage.setItem("hemera_user",u.name||u.email);set({user:u.name||u.email,screen:"home"});}
     else{errEl.textContent="Credenciais inválidas.";errEl.style.display="block";}
