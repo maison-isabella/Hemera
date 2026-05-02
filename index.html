@@ -561,7 +561,7 @@ function drawHome(){
     var c=div({background:BG,border:"1px solid "+BOR,borderRadius:"12px",padding:"14px"});
     c.appendChild(el("div",{fontSize:"9px",color:ph.accent,fontWeight:"700",letterSpacing:"2px",
                             textTransform:"uppercase",marginBottom:"5px"},ph.n));
-    c.appendChild(el("div",{fontSize:"11px",color:MUTED,lineHeight:"1.5"},ph.d));
+    c.appendChild(el("div",{fontSize:"11px",color:MUT,lineHeight:"1.5"},ph.d));
     phases.appendChild(c);
   });
   card.appendChild(phases);
@@ -597,7 +597,7 @@ function drawHome(){
 
 // ── QUIZ ──────────────────────────────────────────────────────────────────────
 function drawQuiz(){
-  var MUTED=MUT;
+  var MUT=MUT;
 
   // INTRO
   if(S.qFase==="intro"){
