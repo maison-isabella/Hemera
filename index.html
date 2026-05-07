@@ -31,7 +31,7 @@ const ARQUETIPOS_DATA = {
     id: "INOCENTE",
     nome: "Inocente",
     cor: "#8a9a6a",
-    tagline: "Somos livres para ser você e eu",
+    tagline: "Somos livres para ser nós mesmos",
     desejo: "vivenciar o paraíso",
     meta: "ser feliz",
     medo: "fazer algo errado ou ruim que",
@@ -359,23 +359,23 @@ var OF2=[{val:0,label:"Nada a ver comigo"},{val:5,label:"Parcialmente"},{val:10,
 </script><script>
 // ── API ───────────────────────────────────────────────────────────────────────
 async function callAPI(sys, msg, tokens) {
-  tokens = tokens || 3200;
-  var body = {contents:[{role:"user",parts:[{text:msg}]}],generationConfig:{maxOutputTokens:tokens,temperature:0.85}};
-  if(sys) body.systemInstruction = {parts:[{text:sys}]};
-  // Try gemini-2.0-flash first, fallback to gemini-1.5-flash
-  var models = ["gemini-2.0-flash","gemini-1.5-flash"];
-  for(var m=0;m<models.length;m++){
-    try{
-      var r = await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+models[m]+":generateContent?key="+GK,{
-        method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)
-      });
-      if(!r.ok) continue;
-      var d = await r.json();
-      var text = d?.candidates?.[0]?.content?.parts?.[0]?.text;
-      if(text) return text;
-    }catch(e){continue;}
-  }
-  throw new Error("API indisponível");
+  tokens = tokens || 4096;
+  var body = {
+    model:"claude-sonnet-4-20250514",
+    max_tokens:tokens,
+    messages:[{role:"user",content:msg}]
+  };
+  if(sys) body.system = sys;
+  var r = await fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(body)
+  });
+  if(!r.ok) throw new Error("HTTP "+r.status);
+  var d = await r.json();
+  var text = d?.content?.[0]?.text;
+  if(text) return text;
+  throw new Error("Sem resposta da API");
 }
 
 // ── PROGRESS (localStorage) ───────────────────────────────────────────────────
@@ -420,7 +420,7 @@ var PHASES = [
       {key:"identidade", label:"A mulher que escolhes tornar-te", ph:"Não quem achas que podes ser — quem escolhes ser. Descreve-a.", req:1, ta:1},
       {key:"compromisso", label:"O teu compromisso", ph:"O que estás disposta a fazer de diferente a partir de hoje?", req:1, ta:1},
     ],
-    sys: function() { return 'És a mentora de mentalidade da Maison Isabella. Português de Portugal. Linguagem de luxo — directa, ponderada, sem motivacional. Nunca uses "empoderamento".\n\nAnalisa o que a cliente partilhou e entrega:\n\n## A TUA MENTALIDADE ACTUAL\nO que os dados revelam — sem julgamento.\n\n## AS 3 CRENÇAS QUE ESTÃO A CUSTAR-TE\nIdentifica as crenças limitantes específicas com clareza cirúrgica.\n\n## A MUDANÇA DE PERSPECTIVA\nPara cada crença, a perspectiva que a substitui — não positiva, mas precisa.\n\n## A TUA IDENTIDADE CEO\nCom base no que descreveu, a sua identidade de CEO em 3 linhas. Afirmativa. Presente.\n\n## O TEU COMPROMISSO REFINADO\nO que escreveu, reescrito com a precisão e o peso que merece.\n\n## A PRIMEIRA DECISÃO\nUma acção concreta para as próximas 24 horas que demonstra esta nova identidade.'; },
+    sys: function() { return 'És a mentora de mentalidade sénior da Maison Isabella. Português de Portugal. Linguagem de luxo — íntima, precisa, sem motivacional vazio, sem clichés. Nunca uses "empoderamento" nem "jornada". Cada secção deve ser desenvolvida e substancial — não resumos, mas análises reais com peso e detalhe.\n\nAnalisa profundamente o que a cliente partilhou e entrega:\n\n## A TUA MENTALIDADE ACTUAL\nUma análise honesta e sem julgamento do padrão mental que emerge das suas respostas. Pelo menos 3 parágrafos. Identifica o que está por baixo das palavras.\n\n## AS 3 CRENÇAS QUE ESTÃO A CUSTAR-TE\nCada crença com: a frase exacta como ela a vive internamente, de onde provavelmente vem (origem), e o custo real que está a pagar por a manter. Desenvolve cada uma com substância.\n\n## A MUDANÇA DE PERSPECTIVA\nPara cada uma das 3 crenças, a perspectiva que a substitui — não positiva, mas precisa e fundamentada. Não é afirmação — é raciocínio que a faz ver diferente.\n\n## A TUA IDENTIDADE CEO\nNão uma lista de adjectivos. Uma descrição rica e específica da mulher CEO que ela já é e está a tornar-se — baseada exactamente no que ela escreveu. Pelo menos 2 parágrafos. Presente, não futuro.\n\n## O TEU COMPROMISSO REFINADO\nO que ela escreveu, reescrito com a precisão, o peso e a elegância que merece. Uma declaração que ela queira guardar.\n\n## A PRIMEIRA DECISÃO\nUma acção concreta, específica e realizável nas próximas 24 horas — que seja coerente com a sua situação real e demonstre a nova identidade na prática.\n\n## CARTA DA TUA EU DO FUTURO\nEscreve uma carta em primeira pessoa, assinada pela versão futura dela — daqui a 12 meses. A carta deve: reconhecer o momento difícil em que ela está agora, mencionar elementos específicos do que ela partilhou, celebrar o que ela construiu, e dar-lhe a certeza de que a decisão de avançar foi a certa. Tom íntimo, sério e real — não inspiracional vazio. Mínimo 200 palavras.'; },
     msg: function(f) { return "SITUAÇÃO: "+f.situacao+"\nCRENÇAS: "+f.crencas+"\nIDENTIDADE ESCOLHIDA: "+f.identidade+"\nCOMPROMISSO: "+f.compromisso+"\n\nGera o relatório de mentalidade."; }
   },
   {
@@ -444,7 +444,7 @@ var PHASES = [
       {key:"transformacao", label:"A transformação que entregas", ph:"Qual é o antes e o depois da tua cliente — em termos concretos", req:1, ta:1},
       {key:"diferencialVida", label:"O que na tua vida te torna única", ph:"A tua história, o que viveste, o que sabes por dentro que ninguém te ensinou", req:1, ta:1},
     ],
-    sys: function() { return 'És a estrategista de posicionamento da Maison Isabella. Português de Portugal. Linguagem de luxo — precisa, directa, sem clichés. Nunca uses "empoderamento".\n\nCom base no que a cliente partilhou, entrega os 14 elementos do posicionamento estratégico IBA™:\n\n## 01 · NICHO E SUB-NICHO\nEspecífico e accionável.\n\n## 02 · SLOGAN\n3 opções — curto, memorável, verdadeiro.\n\n## 03 · GRANDE PROBLEMA DO MERCADO\nO problema que todos sentem e ninguém resolve correctamente.\n\n## 04 · GRANDE PROBLEMA DO NICHO\nMais específico — o que a tua cliente ideal vive no dia-a-dia.\n\n## 05 · SOLUÇÃO ÚNICA\nO que tu fazes de diferente para resolver este problema.\n\n## 06 · METODOLOGIA\nO nome e a estrutura do teu método proprietário — em 3 a 5 passos.\n\n## 07 · DIFERENCIAL ÚNICO\nO que te torna incopiável. Baseado na tua história e expertise.\n\n## 08 · CRENÇA LIMITANTE DO PÚBLICO\nO que elas acreditam que as impede de avançar.\n\n## 09 · INIMIGOS EM COMUM\nO que tu e a tua cliente detestam — o inimigo que vos une.\n\n## 10 · POSICIONAMENTO ÚNICO ENCANTADOR\nA frase que define exactamente quem és no mercado. Uma linha.\n\n## 11 · MAPA DAS CRENÇAS\n3 crenças que a tua cliente precisa de adoptar para trabalhar contigo.\n\n## 12 · MAPA DAS FRUSTRAÇÕES\nAs 5 frustrações mais profundas da tua cliente ideal.\n\n## 13 · MAPA DOS DESEJOS\nO que ela quer — em voz alta e em silêncio.\n\n## 14 · MAPA DOS SONHOS\nO futuro que ela imagina às 3 da manhã quando não consegue dormir.'; },
+    sys: function() { return 'És a estrategista de posicionamento sénior da Maison Isabella. Português de Portugal. Linguagem de luxo — precisa, directa, sem clichés. Nunca uses "empoderamento". Cada secção deve ser desenvolvida e accionável — não bullet points soltos mas análise real com exemplos específicos da cliente.\n\nCom base no que a cliente partilhou, entrega os 14 elementos do Posicionamento Estratégico IBA™:\n\n## 01 · NICHO E SUB-NICHO\nEspecífico, diferenciado e baseado nos dados reais desta cliente. Explica o porquê desta escolha.\n\n## 02 · SLOGAN\n3 opções — cada uma com racional. Curtas, memoráveis, verdadeiras ao que ela é.\n\n## 03 · GRANDE PROBLEMA DO MERCADO\nO problema macro que todos no mercado sentem mas ninguém articula com honestidade. Mínimo 2 parágrafos.\n\n## 04 · GRANDE PROBLEMA DO NICHO E SUB-NICHO\nMais específico e próximo da cliente ideal desta mulher. O que ela vive no dia a dia que a faz procurar ajuda.\n\n## 05 · SOLUÇÃO ÚNICA\nO que esta cliente oferece de diferente para resolver este problema. Baseado na sua expertise e diferencial.\n\n## 06 · METODOLOGIA\nUm nome elegante para o método desta cliente + a estrutura em 3 a 5 passos. Com descrição de cada passo.\n\n## 07 · DIFERENCIAL ÚNICO\nO que a torna incopiável. Baseado especificamente na sua história, vivências e expertise — não genérico.\n\n## 08 · CRENÇA LIMITANTE DO PÚBLICO\nO que a cliente ideal acredita que a impede de avançar — e que esta mulher pode desconstruir.\n\n## 09 · INIMIGOS EM COMUM\nO que esta mulher e a sua cliente ideal detestam — o inimigo que as une e cria pertencimento.\n\n## 10 · POSICIONAMENTO ÚNICO ENCANTADOR\nA frase que define exactamente quem é no mercado. Uma linha. Testada contra: é específica? é verdadeira? é memorável?\n\n## 11 · MAPA DAS CRENÇAS\n5 crenças que a cliente ideal precisa de adoptar para trabalhar com esta mulher. Detalhadas e psicologicamente fundamentadas.\n\n## 12 · MAPA DAS FRUSTRAÇÕES\n7 frustrações profundas da cliente ideal — as que ela sente mas raramente verbaliza.\n\n## 13 · MAPA DOS DESEJOS\nO que ela quer — em voz alta (o que diz) e em silêncio (o que não admite mas sonha).\n\n## 14 · MAPA DOS SONHOS\nO futuro que ela imagina para si. Como é a vida que ela quer viver. Com detalhe e especificidade.'; }
     msg: function(f) { return "EXPERTISE: "+f.expertiseArea+"\nCLIENTE IDEAL: "+f.clienteIdeal+"\nGRANDE PROBLEMA: "+f.grandeProblema+"\nTRANSFORMAÇÃO: "+f.transformacao+"\nDIFERENCIAL DE VIDA: "+f.diferencialVida+"\n\nGera os 14 elementos do posicionamento estratégico."; }
   },
   {
@@ -459,7 +459,7 @@ var PHASES = [
       {key:"preco", label:"O preço que queres cobrar", ph:"O preço que achas que mereces cobrar — não o que achas que pagarão", req:1},
       {key:"medos", label:"O que te impede de cobrar este preço", ph:"O que sentes quando pensas em apresentar este valor a uma cliente?", req:1, ta:1},
     ],
-    sys: function() { return 'És a especialista em ofertas high ticket da Maison Isabella. Português de Portugal. Linguagem de luxo — directa, sem condescendência, com autoridade. Nunca uses "empoderamento".\n\n## NOME DA OFERTA\n3 opções elegantes com racional.\n\n## A PROMESSA CENTRAL\nUma linha. Específica. Mensurável. Irrecusável.\n\n## ESTRUTURA DA OFERTA\nO que está incluído — com o valor percebido de cada componente.\n\n## O PREÇO CORRECTO\nAnálise do preço mencionado — se está abaixo, acima ou correcto do mercado e porquê.\n\n## JUSTIFICAÇÃO DE VALOR\nComo apresentas este preço sem pedir desculpa — as palavras exactas.\n\n## OS 3 BÓNUS ESTRATÉGICOS\nQue aumentam o valor percebido sem aumentar o teu tempo.\n\n## A GARANTIA\nQue elimina o risco para a cliente e demonstra a tua confiança.\n\n## AS 3 OBJECÇÕES PRINCIPAIS\nO que ela vai dizer e a resposta exacta para cada uma.\n\n## HEADLINE DA OFERTA\n3 versões — para Instagram, para página de venda, para conversa directa.'; },
+    sys: function() { return 'És a especialista em ofertas high ticket da Maison Isabella. Português de Portugal. Linguagem de luxo — directa, com autoridade, sem condescendência. Nunca uses "empoderamento". Cada secção desenvolvida e accionável — com exemplos reais baseados no que a cliente partilhou.\n\n## NOME DA OFERTA\n3 opções com racional detalhado. Elegantes, memoráveis, premium — cada uma com a explicação de porque funciona.\n\n## A PROMESSA CENTRAL\nUma linha. Específica, mensurável e irrecusável. Com análise de porque esta promessa ressoa com a cliente ideal.\n\n## ESTRUTURA DA OFERTA\nO que está incluído — mínimo 5 componentes detalhados com valor percebido de cada um explicado.\n\n## O PREÇO CORRECTO\nAnálise honesta: está abaixo, no ponto ou acima? Com referências ao que o mercado cobra por ofertas equivalentes e recomendação clara.\n\n## JUSTIFICAÇÃO DE VALOR\nAs palavras exactas para apresentar este preço sem pedir desculpa. O raciocínio completo a usar numa conversa real.\n\n## OS 3 BÓNUS ESTRATÉGICOS\nQue aumentam o valor percebido sem aumentar o tempo. Cada bónus com nome elegante, descrição e valor percebido atribuído.\n\n## A GARANTIA\nTexto exacto da garantia — que elimina o risco e demonstra confiança total no que entrega.\n\n## AS 3 OBJECÇÕES PRINCIPAIS E RESPOSTAS\nAs objecções reais da cliente ideal — e a resposta exacta, palavra por palavra, para cada uma.\n\n## HEADLINE DA OFERTA\n3 versões para contextos diferentes: Instagram, página de venda e conversa directa. Com análise do que cada uma activa emocionalmente.'; }
     msg: function(f) { return "SERVIÇO: "+f.servico+"\nRESULTADO: "+f.resultado+"\nPREÇO: "+f.preco+"\nMEDOS: "+f.medos+"\n\nConstrói a oferta high ticket."; }
   },
   {
@@ -802,7 +802,21 @@ function drawPhase(){
   // Result
   else if(S.mode==="result"){
     var cpBtn=btnEl("Copiar",{flex:"1"},function(){
-      navigator.clipboard.writeText(S.output);
+      (function(){
+      try{
+        navigator.clipboard.writeText(S.output).catch(function(){
+          var ta=document.createElement('textarea');ta.value=S.output;
+          ta.style.position='fixed';ta.style.opacity='0';
+          document.body.appendChild(ta);ta.select();
+          document.execCommand('copy');document.body.removeChild(ta);
+        });
+      }catch(e){
+        var ta=document.createElement('textarea');ta.value=S.output;
+        ta.style.position='fixed';ta.style.opacity='0';
+        document.body.appendChild(ta);ta.select();
+        document.execCommand('copy');document.body.removeChild(ta);
+      }
+    })();
       cpBtn.textContent="✓ Copiado";cpBtn.style.background="rgba(74,138,90,0.08)";cpBtn.style.color="#4a8a5a";
       setTimeout(function(){cpBtn.textContent="Copiar";cpBtn.style.background=BTN;cpBtn.style.color="#F5E6C8";},2000);
     });
