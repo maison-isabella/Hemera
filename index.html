@@ -4,28 +4,839 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Révélation™ · Maison Isabella</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#F5F0E8;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-input,textarea{font-family:inherit!important}textarea{resize:vertical}
+body{background:#F5F0E8;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-input:focus,textarea:focus{outline:none;border-color:#C5A55A!important;box-shadow:0 0 0 3px rgba(197,165,90,0.1)!important}
+textarea,input{font-family:inherit!important}
+textarea{resize:vertical}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(197,165,90,0.3);border-radius:4px}
+input:focus,textarea:focus{outline:none;border-color:#C5A55A!important}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-var LOGO="data:image/png;base64,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";
-var GK="AIzaSyBsLwvSsHtu3Ee8Dut1bBF8wolXqnaQ-08";
-var USERS=[
-  {email:"andreiarodriguez@sapo.pt",password:"hemera2026",name:"Andreia",role:"admin"}
+// ── PALETA ────────────────────────────────────────────────────────────────────
+var BG='#F5F0E8',CARD='#FFFFFF',DARK='#1a0a00',GOLD='#C5A55A',GOLD2='#DEB96A';
+var MUT='#8a7a6a',BOR='#E8E0D0',BTN='#2a1200';
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+var S={
+  screen:'home', // home|fase1|fase2|fase3|fase4|fase5|agentes|agente
+  phase:null, mode:'intro', form:{}, output:'', err:'', loading:false,
+  agente:null,
+  qStep:'intro',qAi:0,qPi:0,qR1:{},qR2:{},qTop3:[],qDom:null,qSub:null,qTab:'perfil'
+};
+
+// ── PROGRESS ─────────────────────────────────────────────────────────────────
+function loadP(){try{return JSON.parse(localStorage.getItem('rev_iba')||'{}')}catch(e){return{}}}
+function saveP(id,d){var p=loadP();p[id]=d;localStorage.setItem('rev_iba',JSON.stringify(p))}
+function isDone(id){return loadP()[id]&&loadP()[id].done}
+
+// ── API ───────────────────────────────────────────────────────────────────────
+async function callAPI(sys,msg,tokens){
+  tokens=tokens||4096;
+  var r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:tokens,system:sys,messages:[{role:'user',content:msg}]})
+  });
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  var d=await r.json();
+  return d.content?.[0]?.text||'';
+}
+
+// ── AGENTES IBA™ ──────────────────────────────────────────────────────────────
+var AGENTES_IBA=[
+  {
+    id:'posicionamento',nome:'Posicionamento IBA™',icon:'◈',
+    sub:'Frase magnética · Pilares · Bio',
+    cor:'#8a7a9a',
+    desc:'Define a tua posição única no mercado — com a frase que te identifica, os pilares que te sustentam e a bio que atrai quem é para ti.',
+    fields:[
+      {key:'nicho',label:'Qual é o teu nicho?',ph:'Ex: Posicionamento de marca para empreendedoras portuguesas',req:1,ta:0},
+      {key:'cliente',label:'Quem é a tua cliente ideal?',ph:'Empreendedoras de 28-45 anos que querem sair da concorrência pelo preço',req:1,ta:1},
+      {key:'diferencial',label:'O que te diferencia?',ph:'Metodologia baseada em arquetipos adaptada ao mercado português',req:1,ta:1},
+      {key:'transformacao',label:'Transformação concreta que entregas',ph:'Em 90 dias, posicionamento claro e oferta que converte',req:1,ta:1},
+    ],
+    sys:'És a estrategista sénior de posicionamento da Maison Isabella. Português de Portugal. "Empoderamento" PROIBIDO. Linguagem de luxo — precisa, directa, sem clichés.\n\nCom base nos dados da cliente, entrega:\n\n## FRASE DE POSICIONAMENTO\nUma frase ultra-específica que define exactamente quem és, para quem e o que mudas. Deve ser diferente de tudo o que existe no mercado português.\n\n## OS 3 PILARES\nTrês alicerces estratégicos que sustentam o teu posicionamento. Cada um com nome, descrição e como se manifesta na comunicação.\n\n## BIO PROFISSIONAL\n3 versões para Instagram — curta (1 linha), média (3 linhas) e completa (bio section).\n\n## DIFERENCIAIS ÚNICOS\nTrês diferenciais genuinamente únicos baseados na sua história, metodologia e mercado. Específicos, não genéricos.\n\n## COMO COMUNICAR\nAs 3 frases que a cliente pode dizer quando alguém pergunta o que faz — em conversa, no DM, numa entrevista.',
+    msg:function(f){return 'NICHO: '+f.nicho+'\nCLIENTE: '+f.cliente+'\nDIFERENCIAL: '+f.diferencial+'\nTRANSFORMAÇÃO: '+f.transformacao+'\n\nGera o posicionamento completo e detalhado.';}
+  },
+  {
+    id:'ecossistema',nome:'Ecossistema de Produtos',icon:'◇',
+    sub:'3 Níveis de Valor · Esteira Completa',
+    cor:'#7a9a8a',
+    desc:'Arquitecta a tua esteira de produtos — desde a entrada acessível até ao alto valor, com lógica de ascensão e receita previsível.',
+    fields:[
+      {key:'nicho',label:'Nicho',ph:'Ex: Mentoria para empreendedoras digitais',req:1,ta:0},
+      {key:'cliente',label:'Cliente ideal',ph:'Empreendedoras com negócio activo que querem escalar',req:1,ta:1},
+      {key:'produtoAtual',label:'Produto actual',ph:'Consultas a €80/sessão ou mentoria a €500',req:1,ta:0},
+      {key:'ticket',label:'Ticket médio actual',ph:'Ex: €300/mês',req:0,ta:0},
+      {key:'objetivo',label:'Objectivo mensal',ph:'Ex: €5.000 recorrentes',req:1,ta:0},
+    ],
+    sys:'És a arquitecta de negócios da Maison Isabella. Português de Portugal. Preços em €. "Empoderamento" PROIBIDO. Linguagem de luxo.\n\nConstrói a esteira de produtos completa:\n\n## DIAGNÓSTICO\nO que a situação actual revela sobre o negócio — oportunidades e gaps.\n\n## ENTRADA (€27–€197)\nNome elegante + formato + promessa central + preço + papel estratégico na esteira + como gera confiança.\n\n## NÚCLEO (€297–€1.500)\nIdem — com ênfase no que transforma e porque justifica o preço.\n\n## ELEVAÇÃO (€2.000+)\nIdem — alto valor, exclusividade, o que inclui que os outros não têm.\n\n## JORNADA DE ASCENSÃO\nComo a cliente ideal passa de um nível ao seguinte — os gatilhos, os momentos de decisão e o que facilita a subida.\n\n## PREVISÃO DE RECEITA\nCom os três níveis, a receita possível com diferentes cenários de vendas mensais.',
+    msg:function(f){return 'NICHO: '+f.nicho+'\nCLIENTE: '+f.cliente+'\nPRODUTO ACTUAL: '+f.produtoAtual+(f.ticket?' (ticket: '+f.ticket+')':'')+'\nOBJECTIVO: '+f.objetivo+'\n\nConstrói o ecossistema completo.';}
+  },
+  {
+    id:'oferta',nome:'Criação de Oferta',icon:'✦',
+    sub:'Oferta Irresistível · Nome · Promessa · Preço',
+    cor:'#9a8a6a',
+    desc:'Estrutura a tua oferta principal — com nome, promessa central, bónus estratégicos, garantia e headline que converte.',
+    fields:[
+      {key:'produto',label:'Produto ou programa',ph:'Ex: Mentoria de 12 semanas 1:1',req:1,ta:0},
+      {key:'publico',label:'Para quem',ph:'Empreendedoras digitais que querem posicionamento premium',req:1,ta:1},
+      {key:'resultado',label:'Resultado tangível que prometes',ph:'Posicionamento definido e oferta activa em 60 dias',req:1,ta:1},
+      {key:'prazo',label:'Em quanto tempo',ph:'Ex: 90 dias',req:0,ta:0},
+      {key:'preco',label:'Preço',ph:'Ex: €1.197',req:1,ta:0},
+    ],
+    sys:'És a especialista em ofertas high ticket da Maison Isabella. Português de Portugal. Preços em €. "Empoderamento" PROIBIDO.\n\n## 01 · NOME DA OFERTA\n3 opções elegantes com racional detalhado para cada uma. O nome deve ser memorável, premium e verdadeiro.\n\n## 02 · PROMESSA CENTRAL + PRAZO\nUma linha. Específica, mensurável, irrecusável. Com análise de porque esta promessa ressoa.\n\n## 03 · O QUE ESTÁ INCLUÍDO\nMínimo 5 componentes com valor percebido de cada um. Descrição detalhada de cada entregável.\n\n## 04 · BÓNUS ESTRATÉGICOS\n3 bónus que aumentam o valor percebido sem aumentar o tempo. Nome, descrição e valor atribuído.\n\n## 05 · GARANTIA\nTexto exacto — que elimina o risco e demonstra confiança total.\n\n## 06 · URGÊNCIA REAL\nO que torna esta oferta escassa sem ser urgência falsa.\n\n## 07 · HEADLINE DA OFERTA\n3 versões — Instagram, página de venda, conversa directa. Com análise do que cada uma activa.\n\n## 08 · OBJECÇÕES E RESPOSTAS\nTop 3 objecções com a resposta exacta, palavra por palavra.',
+    msg:function(f){return 'PRODUTO: '+f.produto+'\nPÚBLICO: '+f.publico+'\nRESULTADO: '+f.resultado+'\nPRAZO: '+(f.prazo||'a definir')+'\nPREÇO: '+f.preco+'\n\nEstrutura a oferta completa.';}
+  },
+  {
+    id:'scripts',nome:'Scripts de Abordagem',icon:'◉',
+    sub:'WhatsApp · Instagram Direct',
+    cor:'#6a8a7a',
+    desc:'3 scripts de abordagem para WhatsApp e Instagram Direct — cada um com um gatilho diferente, linguagem da tua marca e explicação do porquê funciona.',
+    fields:[
+      {key:'negocio',label:'Nome do negócio',ph:'Ex: Maison Isabella',req:1,ta:0},
+      {key:'produto',label:'Produto principal',ph:'Ex: Révélation™ — programa de posicionamento',req:1,ta:0},
+      {key:'publico',label:'Cliente ideal',ph:'Ex: Mulheres empreendedoras 30-48 anos, Portugal',req:1,ta:0},
+      {key:'tom',label:'Tom da marca',ph:'Ex: Íntimo, sereno, preciso — nunca urgente',req:1,ta:0},
+      {key:'objetivo',label:'Objectivo da abordagem',ph:'Ex: Iniciar conversa que leva a uma chamada',req:1,ta:0},
+      {key:'canal',label:'Canal',ph:'WhatsApp ou Instagram Direct',req:1,ta:0},
+      {key:'contexto',label:'Contexto',ph:'Ex: Comentou no teu post / Seguiu-te há dias',req:0,ta:0},
+    ],
+    sys:'És a especialista em comunicação de vendas da Maison Isabella. Português de Portugal. "Empoderamento" PROIBIDO. Linguagem elegante — nunca insistente, nunca artificial.\n\nGera 3 scripts numerados com abordagens diferentes.\n\nPara cada script:\n\n---\n**SCRIPT [N] — [Nome do Gatilho]**\n\n[Texto completo do script — natural, conversacional, verdadeiro]\n\n**Porquê funciona:** [Explicação da psicologia por trás]\n\n**Quando usar:** [O contexto ideal para este script]\n---',
+    msg:function(f){return 'NEGÓCIO: '+f.negocio+'\nPRODUTO: '+f.produto+'\nPÚBLICO: '+f.publico+'\nTOM: '+f.tom+'\nOBJECTIVO: '+f.objetivo+'\nCANAL: '+f.canal+'\nCONTEXTO: '+(f.contexto||'Geral')+'\n\nGera os 3 scripts.';}
+  },
+  {
+    id:'jornada',nome:'Jornada de Encantamento',icon:'◆',
+    sub:'4 Momentos · Do Seduz ao Retém',
+    cor:'#8a6a9a',
+    desc:'Desenha a experiência completa da tua cliente — dos 4 momentos críticos que transformam uma compradora numa embaixadora.',
+    fields:[
+      {key:'produto',label:'Produto ou programa',ph:'Ex: Mentoria de 12 semanas',req:1,ta:0},
+      {key:'cliente',label:'Cliente ideal',ph:'Empreendedoras que querem posicionamento premium',req:1,ta:1},
+      {key:'dor',label:'Dor principal',ph:'Trabalha muito, cobra pouco, sente que não é reconhecida',req:1,ta:1},
+      {key:'duracao',label:'Duração',ph:'Ex: 3 meses',req:1,ta:0},
+      {key:'canal',label:'Canal principal',ph:'Ex: WhatsApp + Zoom + plataforma',req:0,ta:0},
+    ],
+    sys:'És a especialista em experiência do cliente da Maison Isabella. Português de Portugal. "Empoderamento" PROIBIDO.\n\nPara cada momento, entrega: Objectivo emocional + 3-4 acções concretas de encantamento + ferramentas + métrica de sucesso.\n\n## PRÉ-VENDA · SEDUZ\nAntes de comprar. O que ela sente, o que vê, o que experimenta.\n\n## INTEGRAÇÃO · CONFIRMA\nPrimeiras 48h após a compra. Como confirmas que ela tomou a decisão certa.\n\n## DURANTE A ENTREGA · ENCANTA\nOs momentos que ela vai recordar e contar aos outros.\n\n## PÓS-ENTREGA · RETÉM\nApós o programa. Como ela continua ligada e se torna embaixadora.\n\n## SISTEMA DE RECOMPRA\nO que activa a venda seguinte de forma natural, sem pressão.',
+    msg:function(f){return 'PRODUTO: '+f.produto+'\nCLIENTE: '+f.cliente+'\nDOR: '+f.dor+'\nDURAÇÃO: '+f.duracao+'\nCANAL: '+(f.canal||'a definir')+'\n\nDesenha a jornada completa.';}
+  },
+  {
+    id:'leads',nome:'Leads 30 Dias',icon:'✧',
+    sub:'Plano Diário · Semana a Semana',
+    cor:'#9a7a6a',
+    desc:'Um plano de 30 dias personalizado para gerar leads qualificadas — com acções diárias, canais prioritários e métricas de acompanhamento.',
+    fields:[
+      {key:'nicho',label:'Nicho',ph:'Ex: Posicionamento para empreendedoras',req:1,ta:0},
+      {key:'cliente',label:'Cliente ideal',ph:'Empreendedoras digitais €1.500-3k/mês que querem escalar',req:1,ta:1},
+      {key:'canais',label:'Canais actuais',ph:'Ex: Instagram (1.2k), WhatsApp (80 contactos)',req:1,ta:1},
+      {key:'tempo',label:'Tempo disponível por dia',ph:'Ex: 45 minutos de manhã',req:1,ta:0},
+      {key:'produto',label:'Produto a vender',ph:'Ex: Révélation™ a €1.197',req:1,ta:0},
+      {key:'trafego',label:'Tráfego pago',ph:'Ex: Não / Sim, €100/mês',req:0,ta:0},
+      {key:'meta',label:'Meta em 30 dias',ph:'Ex: 20 leads qualificadas',req:1,ta:0},
+    ],
+    sys:'És a especialista em geração de leads da Maison Isabella. Português de Portugal. Valores em €. "Empoderamento" PROIBIDO.\n\n## DIAGNÓSTICO ESTRATÉGICO\nO que os dados revelam — onde estão as oportunidades reais.\n\n## METAS REALISTAS\nMeta de leads, qualificações e vendas possíveis com os recursos disponíveis.\n\n## SEMANA 1 · FUNDAÇÃO (dias 1-7)\nPor dia: título + 3-4 acções específicas + métrica.\n\n## SEMANA 2 · AMPLIFICAÇÃO (dias 8-14)\nPor dia: título + acções + métrica.\n\n## SEMANA 3 · CONVERSÃO (dias 15-21)\nPor dia: título + acções + métrica.\n\n## SEMANA 4 · FECHO (dias 22-30)\nPor dia: título + acções + métrica.\n\n## SISTEMA DE FOLLOW-UP\nO processo exacto desde o primeiro contacto até à venda.',
+    msg:function(f){return 'NICHO: '+f.nicho+'\nCLIENTE: '+f.cliente+'\nCANAIS: '+f.canais+'\nTEMPO: '+f.tempo+'\nPRODUTO: '+f.produto+'\nTRÁFEGO: '+(f.trafego||'Sem tráfego pago')+'\nMETA: '+f.meta+'\n\nGera o plano completo de 30 dias.';}
+  },
+  {
+    id:'reels',nome:'Roteiro de Reels',icon:'▷',
+    sub:'2 Versões · Prontas a Gravar',
+    cor:'#6a7a9a',
+    desc:'2 roteiros de reels completos — com gancho, desenvolvimento linha a linha e CTA — prontos a gravar sem reescrever.',
+    fields:[
+      {key:'nicho',label:'O teu nicho',ph:'Ex: Posicionamento para empreendedoras',req:1,ta:0},
+      {key:'cliente',label:'Cliente ideal',ph:'Empreendedoras 28-45 anos',req:1,ta:0},
+      {key:'modelo',label:'Modelo de roteiro',ph:'Grande Ilusão · Modelo Padrão · Não Faças Isto',req:1,ta:0,hint:'Grande Ilusão = crença errada do mercado · Modelo Padrão = Gancho+Conteúdo+CTA · Não Faças Isto = errado vs certo'},
+      {key:'tema',label:'Tema deste reel',ph:'Ex: A maior ilusão é que precisas de mais seguidores para vender',req:1,ta:1},
+      {key:'diferencial',label:'O teu diferencial',ph:'Ex: Metodologia baseada em arquetipos',req:0,ta:0},
+    ],
+    sys:'És a especialista em reels de alta conversão da Maison Isabella. Português de Portugal. "Empoderamento" PROIBIDO. Linguagem autêntica — não motivacional.\n\nGera 2 versões completas do roteiro.\n\nPara cada versão:\n\n---\n**VERSÃO [N] — [Abordagem]**\n\nGANCHO (0-3 seg):\n[1 linha que para o scroll]\n\nDESENVOLVIMENTO:\n[roteiro linha a linha, máximo 8 palavras por linha, linguagem falada natural]\n\nCTA:\n[chamada à acção]\n\nNOTA:\n[porquê esta versão funciona e quando usar]\n---',
+    msg:function(f){return 'NICHO: '+f.nicho+'\nCLIENTE: '+f.cliente+'\nMODELO: '+f.modelo+'\nTEMA: '+f.tema+'\nDIFERENCIAL: '+(f.diferencial||'a definir')+'\n\nGera os 2 roteiros completos.';}
+  },
+  {
+    id:'metodologia',nome:'Builder de Metodologia',icon:'⬡',
+    sub:'Metodologia Própria · Nome · Estrutura · Pitch',
+    cor:'#8a9a7a',
+    desc:'Constrói a tua metodologia proprietária — com nome, frase-conceito, estrutura em fases e como apresentá-la ao mercado.',
+    fields:[
+      {key:'produto',label:'Produto ou serviço',ph:'Ex: Mentoria de 12 semanas',req:1,ta:0},
+      {key:'resultado',label:'Resultado que entregas',ph:'Ex: Posicionamento definido e primeira oferta a €1.197 em 60 dias',req:1,ta:1},
+      {key:'publico',label:'Para quem',ph:'Empreendedoras digitais que querem posicionamento premium',req:1,ta:1},
+      {key:'duracao',label:'Duração',ph:'Ex: 90 dias',req:1,ta:0},
+      {key:'estilo',label:'Estilo da marca',ph:'Ex: Íntimo, sereno, Quiet Luxury',req:0,ta:0},
+    ],
+    sys:'És a especialista em construção de metodologias da Maison Isabella. Português de Portugal. "Empoderamento" PROIBIDO.\n\n## NOME DA METODOLOGIA\n3 opções criativas com racional detalhado. Elegantes, memoráveis, protegíveis (com ™).\n\n## FRASE-CONCEITO\n1 linha memorável que resume toda a metodologia.\n\n## ESTRUTURA EM FASES\n3-5 fases. Para cada: nome da fase + objectivo transformacional + entregável concreto + duração.\n\n## DIFERENCIAL ÚNICO\nO que torna esta metodologia incopiável — baseado na história e expertise desta mulher.\n\n## COMO APRESENTAR AO MERCADO\n1 parágrafo de pitch para usar em Instagram, em conversa e em página de venda.\n\n## VOCABULÁRIO PRÓPRIO\n5-7 termos ou conceitos que só existem nesta metodologia.',
+    msg:function(f){return 'PRODUTO: '+f.produto+'\nRESULTADO: '+f.resultado+'\nPÚBLICO: '+f.publico+'\nDURAÇÃO: '+f.duracao+'\nESTILO: '+(f.estilo||'a definir')+'\n\nConstrói a metodologia completa.';}
+  ,
+  {
+    id:'presenca',nome:'Presença Digital IBA™',icon:'✶',
+    sub:'Bio · Destaques · Carrossel · Reel',
+    cor:'#C5A55A',
+    desc:'Constrói a tua presença no Instagram com coerência total — bio que posiciona, destaques que qualificam, carrosséis que constroem raciocínio e reels que atraem. Tudo filtrado pela filosofia Quiet Luxury IBA™.',
+    fields:[
+      {key:'nome',label:'O teu nome e marca',ph:'Ex: Andreia Rodrigues · Maison Isabella',req:1,ta:0},
+      {key:'nicho',label:'O teu nicho',ph:'Ex: Posicionamento Quiet Luxury para empreendedoras portuguesas',req:1,ta:0},
+      {key:'cliente',label:'A tua cliente ideal',ph:'Mulher empreendedora digital 28-45 anos, Portugal, quer posicionamento premium',req:1,ta:1},
+      {key:'diferencial',label:'O teu diferencial único',ph:'Ex: Única metodologia de posicionamento QL em português europeu baseada em arquetipos',req:1,ta:1},
+      {key:'produto',label:'Produto ou serviço principal',ph:'Ex: Révélation™ — programa de posicionamento a €1.197',req:1,ta:0},
+      {key:'historia',label:'A tua história de origem (resumida)',ph:'Ex: 6 anos com crianças, assédio laboral como mãe, decisão de soberania total',req:1,ta:1},
+      {key:'tom',label:'Tom da marca',ph:'Ex: Íntimo, sereno, preciso — nunca urgente nem performático',req:0,ta:0},
+      {key:'tipo',label:'O que queres gerar',ph:'Bio · Destaques · Carrossel (especifica o tipo) · Reel · Tudo',req:1,ta:0},
+      {key:'temaCarrossel',label:'Tema do carrossel ou reel (se aplicável)',ph:'Ex: Por que o teu preço baixo está a afastar as clientes certas',req:0,ta:1},
+    ],
+    sys:`És a especialista em presença digital Quiet Luxury da Maison Isabella. Português de Portugal. Nunca uses "empoderamento". Linguagem íntima, precisa, nunca urgente. Cada palavra passa pelo teste: isto grita ou sussurra?
+
+A tua função é construir presença digital que qualifica — não que vende de forma agressiva. O conteúdo da Maison Isabella atrai por silêncio estratégico, não por volume.
+
+Baseias-te em dois pilares:
+— Posicionamento AMHT (Vika Ferrari): o que faz, para quem, porquê é única, a transformação que entrega
+— Estrutura de conteúdo (princípios universais filtrados pelo QL): carrossel como construção de raciocínio, reel como atracção, bio como declaração, destaques como vitrine silenciosa
+
+Com base no que a cliente partilhou, entrega o que foi pedido:
+
+---
+
+**SE PEDIU BIO:**
+
+## BIO · 3 VERSÕES
+
+**Versão Curta (1 linha — para nome de utilizador ou tagline)**
+[Uma linha. Quem és + para quem + o que mudas]
+
+**Versão Média (3 linhas — para bio Instagram)**
+[Linha 1: o que fazes de diferente]
+[Linha 2: para quem e o resultado]
+[Linha 3: CTA suave sem urgência]
+
+**Versão Completa (bio section — para link in bio ou página)**
+[Parágrafo completo que posiciona, seduz e convida. Sem urgência. Com identidade.]
+
+**Porquê esta bio funciona:**
+[Análise breve de cada elemento estratégico]
+
+---
+
+**SE PEDIU DESTAQUES:**
+
+## DESTAQUES · ARQUITECTURA COMPLETA
+
+[Para cada destaque:]
+**Nome do destaque:** [máximo 12 caracteres — elegante, não genérico]
+**O que contém:** [que stories/conteúdo guardar aqui]
+**Função estratégica:** [o que qualifica ou posiciona neste destaque]
+
+Mínimo 6 destaques. Sugestão de ordem estratégica incluída.
+
+---
+
+**SE PEDIU CARROSSEL:**
+
+## CARROSSEL · ESTRUTURA COMPLETA
+
+**Tipo:** [Autoridade / Prova Social / Storytelling / Posicionamento / Conversão]
+**Intenção:** [Qualificar / Conectar / Converter]
+
+**SLIDE 1 — CAPA**
+Headline: [frase que para o scroll — específica, não genérica]
+Subheadline (opcional): [complemento em tom suave]
+
+**SLIDE 2**
+Texto: [desenvolvimento — máximo 3 linhas por slide]
+
+**SLIDE 3**
+Texto: [...]
+
+[continua até ao slide final]
+
+**SLIDE FINAL — CTA**
+Texto: [convite suave. Nunca "arrasta para o lado" ou "link na bio" isolado]
+
+**Copy da legenda (caption):**
+[Parágrafo completo que acompanha o carrossel — tom conversacional, sem hashtags agressivas]
+
+**Hashtags sugeridas:** [máximo 5, relevantes e de nicho]
+
+---
+
+**SE PEDIU REEL:**
+
+## REEL · 2 VERSÕES
+
+**VERSÃO 1 — [Nome da abordagem]**
+
+GANCHO (0–3 seg):
+[1 linha que para o scroll]
+
+DESENVOLVIMENTO:
+[roteiro linha a linha, máximo 8 palavras por linha, linguagem falada, natural]
+
+CTA:
+[convite suave — nunca urgente]
+
+**Porquê funciona:** [análise breve]
+
+---
+
+**VERSÃO 2 — [Nome da abordagem alternativa]**
+[Idem]
+
+---
+
+**SE PEDIU TUDO:**
+Entrega bio + destaques + 1 carrossel + 1 reel, nesta ordem, com coerência total entre todos.`,
+    msg:function(f){return 'NOME/MARCA: '+f.nome+'
+NICHO: '+f.nicho+'
+CLIENTE IDEAL: '+f.cliente+'
+DIFERENCIAL: '+f.diferencial+'
+PRODUTO: '+f.produto+'
+HISTÓRIA: '+f.historia+'
+TOM: '+(f.tom||'Quiet Luxury — íntimo, preciso, nunca urgente')+'
+O QUE GERAR: '+f.tipo+'
+TEMA: '+(f.temaCarrossel||'a definir com base no posicionamento')+'
+
+Gera o conteúdo pedido com qualidade de luxo — nada genérico, tudo específico e alinhado com a identidade desta mulher.';}
+  }
 ];
-var BG="#F5F0E8",CARD="#FFFFFF",DARK="#1a0a00",GOLD="#C5A55A",MUT="#8a7a6a",BOR="#E8E0D0",BTN="#2a1200";
+
+// ── PHASES ────────────────────────────────────────────────────────────────────
+var PHASES=[
+  {id:'fase1',num:1,nome:'Mentalidade',icon:'✦',sub:'A fundação de tudo',cor:'#7a9a8a',
+   desc:'Antes de qualquer estratégia, existe uma decisão. Identificas as crenças que te têm impedido, defines quem escolhes tornar-te e recebes a Carta da tua Eu do Futuro.',
+   fields:[
+     {key:'situacao',label:'Onde estás agora',ph:'A tua situação actual — o que fazes, o que te falta, onde sentes que estás presa',ta:1,req:1},
+     {key:'crencas',label:'O que te diz a voz que duvida de ti',ph:'Aquela voz interna — o que diz exactamente?',ta:1,req:1},
+     {key:'identidade',label:'A mulher que escolhes tornar-te',ph:'Não quem achas que podes ser — quem escolhes ser. Descreve-a.',ta:1,req:1},
+     {key:'compromisso',label:'O teu compromisso',ph:'O que estás disposta a fazer de diferente a partir de hoje?',ta:1,req:1},
+   ],
+   sys:'És a mentora de mentalidade sénior da Maison Isabella. Português de Portugal. Linguagem de luxo — directa, sem motivacional. Nunca uses "empoderamento".\n\nAnalisa o que a cliente partilhou e entrega:\n\n## A TUA MENTALIDADE ACTUAL\nAnálise honesta e sem julgamento do padrão mental que emerge — pelo menos 3 parágrafos. O que está por baixo das palavras.\n\n## AS 3 CRENÇAS QUE ESTÃO A CUSTAR-TE\nPara cada crença: a frase exacta como ela a vive internamente, de onde provavelmente vem, e o custo real que está a pagar.\n\n## A MUDANÇA DE PERSPECTIVA\nPara cada uma das 3 crenças, a perspectiva que a substitui — não positiva, mas precisa e fundamentada.\n\n## A TUA IDENTIDADE CEO\nNão adjectivos — uma descrição rica e específica da mulher CEO que ela já é e está a tornar-se. Mínimo 2 parágrafos.\n\n## O TEU COMPROMISSO REFINADO\nO que ela escreveu, reescrito com precisão e peso. Uma declaração que ela queira guardar.\n\n## A PRIMEIRA DECISÃO\nUma acção concreta, específica, realizável nas próximas 24 horas.\n\n## CARTA DA TUA EU DO FUTURO\nCarta em primeira pessoa, assinada pela versão dela daqui a 12 meses. Deve: reconhecer o momento difícil actual, mencionar elementos específicos do que partilhou, celebrar o que construiu, e dar-lhe a certeza de que avançar foi a decisão certa. Tom íntimo, sério e real. Mínimo 200 palavras.',
+   msg:function(f){return 'SITUAÇÃO: '+f.situacao+'\nCRENÇAS: '+f.crencas+'\nIDENTIDADE ESCOLHIDA: '+f.identidade+'\nCOMPROMISSO: '+f.compromisso+'\n\nGera o relatório de mentalidade completo.';}
+  },
+  {id:'fase2',num:2,nome:'Descoberta Arquetípica',icon:'◆',sub:'Quem és antes de qualquer estratégia',cor:'#C5A55A',isQuiz:1,
+   desc:'O teu arquétipo dominante é a fundação da tua marca, da tua voz e da tua oferta. Quiz completo: 15 afirmações × 12 arquetipos + subtipos + perfil completo.'
+  },
+  {id:'fase3',num:3,nome:'Posicionamento Estratégico',icon:'◈',sub:'A tua posição única no mercado',cor:'#8a7a9a',
+   desc:'14 entregáveis que definem exactamente quem serves, como apareces e porque és insubstituível.',
+   fields:[
+     {key:'expertise',label:'A tua área de expertise',ph:'O que sabes fazer melhor do que a maioria',ta:1,req:1},
+     {key:'cliente',label:'A tua cliente ideal',ph:'Quem é ela? Contexto, o que está a viver, o que quer',ta:1,req:1},
+     {key:'problema',label:'O grande problema do mercado',ph:'O que todos sentem mas ninguém resolve directamente',ta:1,req:1},
+     {key:'transformacao',label:'A transformação que entregas',ph:'O antes e o depois — em termos concretos',ta:1,req:1},
+     {key:'diferencial',label:'O que na tua vida te torna única',ph:'A tua história, o que viveste, o que sabes por dentro',ta:1,req:1},
+   ],
+   sys:'És a estrategista de posicionamento sénior da Maison Isabella. Português de Portugal. Linguagem de luxo. Nunca uses "empoderamento". Cada secção desenvolvida com substância — não bullet points soltos.\n\n## 01 · NICHO E SUB-NICHO\nEspecífico, diferenciado. Explica o porquê desta escolha.\n\n## 02 · SLOGAN\n3 opções com racional. Curtas, memoráveis, verdadeiras.\n\n## 03 · GRANDE PROBLEMA DO MERCADO\nO problema macro que todos sentem e ninguém articula. Mínimo 2 parágrafos.\n\n## 04 · GRANDE PROBLEMA DO NICHO\nMais específico — o que a cliente ideal vive no dia-a-dia.\n\n## 05 · SOLUÇÃO ÚNICA\nO que esta mulher oferece de diferente.\n\n## 06 · METODOLOGIA\nNome elegante + estrutura em 3-5 passos com descrição de cada.\n\n## 07 · DIFERENCIAL ÚNICO\nO que a torna incopiável — baseado na sua história.\n\n## 08 · CRENÇA LIMITANTE DO PÚBLICO\nO que a cliente ideal acredita que a impede.\n\n## 09 · INIMIGOS EM COMUM\nO que as une — o inimigo partilhado.\n\n## 10 · POSICIONAMENTO ÚNICO ENCANTADOR\nUma linha. Específica, verdadeira, memorável.\n\n## 11 · MAPA DAS CRENÇAS\n5 crenças que a cliente precisa de adoptar.\n\n## 12 · MAPA DAS FRUSTRAÇÕES\n7 frustrações profundas — as que sente mas raramente verbaliza.\n\n## 13 · MAPA DOS DESEJOS\nO que ela quer em voz alta e em silêncio.\n\n## 14 · MAPA DOS SONHOS\nO futuro que imagina para si — com detalhe.',
+   msg:function(f){return 'EXPERTISE: '+f.expertise+'\nCLIENTE: '+f.cliente+'\nPROBLEMA: '+f.problema+'\nTRANSFORMAÇÃO: '+f.transformacao+'\nDIFERENCIAL: '+f.diferencial+'\n\nGera os 14 elementos do posicionamento IBA™.';}
+  },
+  {id:'fase4',num:4,nome:'Oferta High Ticket',icon:'◇',sub:'O que vendes e como cobras',cor:'#9a7a6a',
+   desc:'Constrói a tua oferta premium — uma oferta que o mercado paga não porque é barata, mas porque é irrecusável.',
+   fields:[
+     {key:'servico',label:'O serviço ou programa que queres criar',ph:'O que entregas — formato, duração, número de pessoas',ta:1,req:1},
+     {key:'resultado',label:'O resultado tangível que prometes',ph:'Ao fim de X tempo, a cliente terá ou será capaz de...',ta:1,req:1},
+     {key:'preco',label:'O preço que queres cobrar',ph:'O preço que achas que mereces — não o que achas que pagarão',ta:0,req:1},
+     {key:'medos',label:'O que te impede de cobrar este preço',ph:'O que sentes quando pensas em apresentar este valor?',ta:1,req:1},
+   ],
+   sys:'És a especialista em ofertas high ticket da Maison Isabella. Português de Portugal. Linguagem de luxo. Nunca uses "empoderamento".\n\n## NOME DA OFERTA\n3 opções com racional detalhado. Elegantes, memoráveis, premium.\n\n## A PROMESSA CENTRAL\nUma linha. Específica, mensurável, irrecusável. Com análise de porque funciona.\n\n## ESTRUTURA DA OFERTA\nMínimo 5 componentes detalhados com valor percebido de cada um.\n\n## O PREÇO CORRECTO\nAnálise: está abaixo, no ponto ou acima? Com referência ao que o mercado cobra e recomendação clara.\n\n## JUSTIFICAÇÃO DE VALOR\nAs palavras exactas para apresentar este preço sem pedir desculpa.\n\n## OS 3 BÓNUS ESTRATÉGICOS\nNome elegante, descrição e valor percebido atribuído a cada um.\n\n## A GARANTIA\nTexto exacto — que elimina o risco e demonstra confiança.\n\n## AS 3 OBJECÇÕES PRINCIPAIS E RESPOSTAS\nObjecções reais + resposta exacta, palavra por palavra.\n\n## HEADLINE DA OFERTA\n3 versões — Instagram, página de venda, conversa directa.',
+   msg:function(f){return 'SERVIÇO: '+f.servico+'\nRESULTADO: '+f.resultado+'\nPREÇO: '+f.preco+'\nMEDOS: '+f.medos+'\n\nConstrói a oferta high ticket completa.';}
+  },
+  {id:'fase5',num:5,nome:'Académie Digitale™',icon:'◉',sub:'A implementação do teu sistema digital',cor:'#6a7a9a',isLink:1,
+   desc:'Com identidade, posicionamento e oferta definidos, é hora de implementar. A Académie Digitale™ entrega as ferramentas, as plataformas e os sistemas.'
+  },
+];
+
+// ── ARQUETIPOS DATA ────────────────────────────────────────────────────────────
+// [Full archetype data will be loaded from Hemera]
+var ARQS_ORDER=["INOCENTE","SABIA","EXPLORADORA","REBELDE","HEROINA","MAGA","CIDADA","AMANTE","PERFORMATICA","CUIDADORA","CRIADORA","GOVERNANTE"];
+var OF1=[{val:0,label:"Não me identifico"},{val:3,label:"Identifico-me pouco"},{val:6,label:"Identifico-me moderadamente"},{val:8,label:"Identifico-me bastante"},{val:10,label:"Identifico-me completamente"}];
+var OF2=[{val:0,label:"Nada a ver comigo"},{val:5,label:"Parcialmente"},{val:10,label:"É exactamente como me vejo"}];
+
+// ── DOM HELPERS ───────────────────────────────────────────────────────────────
+function el(tag,style,text){var e=document.createElement(tag);if(style)Object.assign(e.style,style);if(text!=null)e.textContent=text;return e;}
+function div(style,children){var d=document.createElement('div');if(style)Object.assign(d.style,style);(children?[].concat(children):[]).filter(Boolean).forEach(function(c){d.appendChild(typeof c==='string'?document.createTextNode(c):c);});return d;}
+function btn(text,style,fn){var b=el('button',Object.assign({width:'100%',padding:'15px',background:BTN,color:'#F5E6C8',border:'none',borderRadius:'10px',fontSize:'14px',fontWeight:'600',cursor:'pointer',fontFamily:'inherit',letterSpacing:'0.4px'},style||{}),text);b.onclick=fn;return b;}
+function inp(style,ph,val,onInput){var i=el('input',Object.assign({width:'100%',padding:'12px 16px',height:'48px',background:BG,border:'1.5px solid '+BOR,borderRadius:'9px',fontSize:'13px',color:DARK,fontFamily:'inherit',boxSizing:'border-box'},style||{}));i.placeholder=ph||'';i.value=val||'';i.oninput=function(e){onInput(e.target.value);};return i;}
+function ta(style,ph,val,onInput){var t=document.createElement('textarea');Object.assign(t.style,Object.assign({width:'100%',padding:'12px 16px',background:BG,border:'1.5px solid '+BOR,borderRadius:'9px',fontSize:'13px',color:DARK,fontFamily:'inherit',boxSizing:'border-box',lineHeight:'1.65',minHeight:'85px'},style||{}));t.placeholder=ph||'';t.value=val||'';t.oninput=function(e){onInput(e.target.value);};return t;}
+function pbar(pct,label){return div({marginBottom:'16px'},[div({display:'flex',justifyContent:'space-between',marginBottom:'5px'},[el('span',{fontSize:'10px',letterSpacing:'2px',color:GOLD,fontWeight:'700',textTransform:'uppercase'},label),el('span',{fontSize:'10px',color:MUT},pct+'%')]),div({height:'3px',background:BOR,borderRadius:'999px',overflow:'hidden'},[div({height:'100%',width:pct+'%',background:'linear-gradient(90deg,'+GOLD+','+GOLD2+')',borderRadius:'999px',transition:'width 0.4s'})])]);}
+function mdRender(text){var w=div({});if(!text)return w;text.split('\n').forEach(function(line){var n;if(line.startsWith('## '))n=el('h2',{fontSize:'13px',fontWeight:'700',color:GOLD,margin:'20px 0 7px',paddingBottom:'4px',borderBottom:'1px solid '+BOR},line.slice(3));else if(line.startsWith('### '))n=el('h3',{fontSize:'12px',fontWeight:'600',color:DARK,margin:'14px 0 4px'},line.slice(4));else if(line.startsWith('**')&&line.endsWith('**'))n=el('p',{fontSize:'13px',fontWeight:'700',color:DARK,margin:'6px 0'},line.slice(2,-2));else if(line.startsWith('- ')||line.startsWith('* ')){n=div({display:'flex',gap:'8px',marginBottom:'4px'});n.appendChild(el('span',{color:GOLD,fontWeight:'700',flexShrink:'0'},'·'));n.appendChild(el('span',{fontSize:'13px',color:'#5a4a38',lineHeight:'1.65'},line.slice(2)));}else if(line.trim()==='')n=div({height:'4px'});else n=el('p',{fontSize:'13px',color:'#5a4a38',lineHeight:'1.75',margin:'1px 0'},line);if(n)w.appendChild(n);});return w;}
+function setState(o){Object.assign(S,o);draw();}
+
+// ── HOME SCREEN ───────────────────────────────────────────────────────────────
+function drawHome(){
+  var prog=loadP();
+  var done=PHASES.filter(function(p){return isDone(p.id);}).length;
+  var pct=Math.round((done/PHASES.length)*100);
+
+  // Header
+  var hd=div({display:'flex',alignItems:'center',gap:'14px',marginBottom:'22px',paddingBottom:'18px',borderBottom:'1px solid '+BOR});
+  var logo=div({});
+  logo.appendChild(el('div',{fontFamily:"'Cormorant Garamond',serif",fontSize:'22px',fontStyle:'italic',fontWeight:'600',color:DARK},'Révélation™'));
+  logo.appendChild(el('p',{fontSize:'9px',letterSpacing:'3px',color:GOLD,textTransform:'uppercase',margin:'2px 0 0'},'Maison Isabella'));
+  hd.appendChild(logo);
+
+  // Progress
+  var progBar=div({background:CARD,borderRadius:'14px',border:'1px solid '+BOR,padding:'14px 18px',marginBottom:'18px'},[
+    div({display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px'},[
+      el('div',{fontSize:'12px',fontWeight:'600',color:DARK},'A tua jornada'),
+      el('div',{fontSize:'12px',color:GOLD,fontWeight:'700'},done+' / '+PHASES.length+' fases')
+    ]),
+    div({height:'4px',background:BOR,borderRadius:'999px',overflow:'hidden'},[
+      div({height:'100%',width:pct+'%',background:'linear-gradient(90deg,'+GOLD+','+GOLD2+')',borderRadius:'999px'})
+    ])
+  ]);
+
+  // Phase cards
+  var phCards=PHASES.map(function(ph,i){
+    var d=isDone(ph.id);
+    var prevD=i===0||isDone(PHASES[i-1].id);
+    var locked=!prevD&&!d;
+    var card=div({background:d?'rgba(197,165,90,0.06)':CARD,border:'1px solid '+(d?'rgba(197,165,90,0.4)':locked?'rgba(197,165,90,0.08)':BOR),borderRadius:'14px',padding:'14px 16px',cursor:locked?'default':'pointer',opacity:locked?'0.5':'1',transition:'all 0.2s',marginBottom:'8px',animation:'fadeUp 0.3s ease '+(i*0.05)+'s both'});
+    var row=div({display:'flex',alignItems:'center',gap:'12px'});
+    var badge=div({width:'34px',height:'34px',borderRadius:'10px',background:d?'rgba(74,138,90,0.1)':ph.cor+'18',border:'1px solid '+(d?'rgba(74,138,90,0.3)':ph.cor+'40'),display:'flex',alignItems:'center',justifyContent:'center',flexShrink:'0',fontSize:'13px',color:d?'#4a8a5a':ph.cor},d?'✓':ph.icon);
+    var info=div({flex:'1'});
+    info.appendChild(el('div',{fontSize:'9px',letterSpacing:'2px',fontWeight:'700',textTransform:'uppercase',color:d?'#4a8a5a':ph.cor,marginBottom:'1px'},'Fase '+ph.num));
+    info.appendChild(el('div',{fontSize:'13px',fontWeight:'600',color:d||!locked?DARK:MUT},ph.nome));
+    info.appendChild(el('div',{fontSize:'11px',color:MUT,marginTop:'1px'},ph.sub));
+    row.appendChild(badge);row.appendChild(info);
+    row.appendChild(el('span',{fontSize:locked?'13px':'12px',color:locked?MUT:GOLD,opacity:locked?'0.4':'1'},locked?'🔒':'→'));
+    card.appendChild(row);
+    if(!locked){
+      card.onmouseenter=function(){if(!d){card.style.borderColor=ph.cor+'50';card.style.transform='translateY(-1px)';}};
+      card.onmouseleave=function(){card.style.borderColor=d?'rgba(197,165,90,0.4)':BOR;card.style.transform='';};
+      card.onclick=function(){setState({screen:ph.id,phase:ph,mode:'intro',form:{},output:'',err:'',qStep:'intro',qAi:0,qPi:0,qR1:{},qR2:{},qTop3:[],qDom:null,qSub:null,qTab:'perfil'});};
+    }
+    return card;
+  });
+
+  // Agentes section
+  var agtHeader=div({marginTop:'24px',marginBottom:'12px',paddingTop:'20px',borderTop:'1px solid '+BOR});
+  agtHeader.appendChild(el('div',{fontSize:'10px',letterSpacing:'3px',color:GOLD,fontWeight:'700',textTransform:'uppercase',marginBottom:'4px'},'Ferramentas IBA™'));
+  agtHeader.appendChild(el('p',{fontSize:'12px',color:MUT},'8 agentes de inteligência · disponíveis após as 5 fases ou a qualquer momento'));
+
+  var allDone=done===PHASES.length;
+  var agtGrid=div({display:'flex',flexDirection:'column',gap:'8px'});
+  AGENTES_IBA.forEach(function(ag){
+    var card=div({background:allDone?CARD:'rgba(197,165,90,0.03)',border:'1px solid '+(allDone?BOR:'rgba(197,165,90,0.1)'),borderRadius:'12px',padding:'12px 16px',cursor:allDone?'pointer':'default',opacity:allDone?'1':'0.55',transition:'all 0.2s'});
+    var row=div({display:'flex',alignItems:'center',gap:'12px'});
+    var badge=div({width:'30px',height:'30px',borderRadius:'8px',background:ag.cor+'18',border:'1px solid '+ag.cor+'40',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:'0',fontSize:'12px',color:ag.cor},ag.icon);
+    var info=div({flex:'1'});
+    info.appendChild(el('div',{fontSize:'13px',fontWeight:'600',color:allDone?DARK:MUT},ag.nome));
+    info.appendChild(el('div',{fontSize:'11px',color:MUT,marginTop:'1px'},ag.sub));
+    row.appendChild(badge);row.appendChild(info);
+    row.appendChild(el('span',{fontSize:'11px',color:allDone?GOLD:MUT,opacity:allDone?'1':'0.3'},allDone?'→':'🔒'));
+    card.appendChild(row);
+    if(allDone){
+      card.onmouseenter=function(){card.style.borderColor=ag.cor+'50';card.style.transform='translateY(-1px)';};
+      card.onmouseleave=function(){card.style.borderColor=BOR;card.style.transform='';};
+      card.onclick=function(){setState({screen:'agente',agente:ag,mode:'intro',form:{},output:'',err:'',loading:false});};
+    }
+    agtGrid.appendChild(card);
+  });
+
+  if(!allDone){
+    var lockMsg=div({textAlign:'center',padding:'10px',background:'rgba(197,165,90,0.04)',borderRadius:'10px',border:'1px solid rgba(197,165,90,0.1)',marginBottom:'8px'});
+    lockMsg.appendChild(el('p',{fontSize:'11px',color:MUT,fontStyle:'italic'},'Completa as 5 fases da Révélation™ para desbloquear os 8 agentes IBA™'));
+    agtGrid.prepend(lockMsg);
+  }
+
+  return div({minHeight:'100vh',background:BG,padding:'28px 18px 60px'},[
+    div({maxWidth:'560px',margin:'0 auto'},[
+      hd,progBar,...phCards,agtHeader,agtGrid,
+      el('p',{textAlign:'center',color:MUT,fontSize:'9px',marginTop:'28px',letterSpacing:'3px',textTransform:'uppercase',opacity:'0.4'},'Révélation™ · Maison Isabella · IBA™')
+    ])
+  ]);
+}
+
+// ── PHASE FORM SCREEN ─────────────────────────────────────────────────────────
+function drawPhase(){
+  var ph=S.phase;
+  if(!ph)return drawHome();
+  if(ph.isQuiz)return drawQuiz();
+  if(ph.isLink){
+    return div({minHeight:'100vh',background:BG,display:'flex',alignItems:'center',justifyContent:'center',padding:'24px'},[
+      div({maxWidth:'480px',width:'100%',textAlign:'center'},[
+        el('div',{fontFamily:"'Cormorant Garamond',serif",fontSize:'36px',fontStyle:'italic',color:DARK,marginBottom:'8px'},'Académie Digitale™'),
+        el('p',{fontSize:'9px',letterSpacing:'3px',color:MUT,textTransform:'uppercase',marginBottom:'20px'},'Fase 5 · Révélation™'),
+        div({background:CARD,borderRadius:'18px',border:'1px solid '+BOR,padding:'28px'},[
+          el('p',{fontSize:'13px',color:DARK,lineHeight:'1.8',marginBottom:'20px',fontStyle:'italic'},'Chegaste aqui com identidade, posicionamento e oferta definidos. Agora é a implementação.'),
+          btn('Aceder à Académie Digitale™ →',{marginBottom:'10px'},function(){saveP('fase5',{done:true});alert('Link será activado em breve.');}),
+          btn('← Início',{background:'none',border:'1.5px solid '+BOR,color:MUT,fontSize:'13px'},function(){setState({screen:'home',phase:null});})
+        ])
+      ])
+    ]);
+  }
+
+  // Header
+  var hd=div({display:'flex',alignItems:'center',gap:'12px',marginBottom:'18px',paddingBottom:'14px',borderBottom:'1px solid '+BOR});
+  hd.appendChild(div({fontSize:'18px',color:ph.cor},ph.icon));
+  var info=div({flex:'1'});
+  info.appendChild(el('div',{fontSize:'9px',letterSpacing:'2px',color:ph.cor,fontWeight:'700',textTransform:'uppercase',marginBottom:'1px'},'Fase '+ph.num+' · Révélation™'));
+  info.appendChild(el('h2',{fontFamily:"'Cormorant Garamond',serif",fontSize:'20px',fontStyle:'italic',color:DARK,margin:'0'},ph.nome));
+  hd.appendChild(info);
+  hd.appendChild(btn('← Início',{width:'auto',padding:'6px 12px',fontSize:'11px',background:'none',border:'1px solid '+BOR,color:MUT},function(){setState({screen:'home',phase:null});}));
+
+  var content;
+
+  if(S.mode==='intro'){
+    var done2=isDone(ph.id);
+    content=div({background:CARD,borderRadius:'18px',border:'1px solid '+BOR,padding:'clamp(20px,4vw,34px)',animation:'fadeUp 0.3s ease both'},[
+      el('p',{fontSize:'13px',color:MUT,lineHeight:'1.85',marginBottom:'22px'},ph.desc),
+      done2?div({padding:'12px 14px',background:'rgba(74,138,90,0.06)',borderRadius:'10px',border:'1px solid rgba(74,138,90,0.2)',marginBottom:'14px'},[el('p',{fontSize:'12px',color:'#4a8a5a',fontWeight:'600'},'✓  Fase concluída — podes rever ou refazer.')]):null,
+      btn(done2?'Ver resultado →':'Começar →',{marginBottom:'8px'},function(){if(done2){var p=loadP();if(p[ph.id]&&p[ph.id].output){setState({mode:'result',output:p[ph.id].output});}else{setState({mode:'form'});}}else{setState({mode:'form'});}}),
+      done2?btn('Refazer',{background:'none',border:'1.5px solid '+BOR,color:MUT,fontSize:'13px'},function(){setState({mode:'form',output:''});}):null
+    ]);
+  }
+  else if(S.mode==='form'){
+    var fields=(ph.fields||[]).map(function(f,i){
+      var lbl=el('label',{display:'block',fontSize:'12px',fontWeight:'600',color:DARK,marginBottom:'6px'});
+      lbl.innerHTML='<span style="color:'+GOLD+';margin-right:4px">'+(i+1)+'.</span>'+f.label+'<span style="color:#c05050;margin-left:2px">*</span>';
+      var input=f.ta?ta({},f.ph||'',S.form[f.key]||'',function(v){S.form[f.key]=v;}):inp({},f.ph||'',S.form[f.key]||'',function(v){S.form[f.key]=v;});
+      return div({marginBottom:'16px'},[lbl,input]);
+    });
+    var errEl=S.err?el('p',{color:'#c05050',fontSize:'12px',padding:'10px 14px',background:'rgba(194,80,80,0.05)',borderRadius:'8px',marginBottom:'10px'},S.err):null;
+    async function gerar(){
+      var miss=(ph.fields||[]).filter(function(f){return f.req&&!(S.form[f.key]||'').trim();});
+      if(miss.length){setState({err:'Preenche todos os campos obrigatórios.'});return;}
+      setState({mode:'loading',err:'',loading:true});
+      try{var out=await callAPI(ph.sys,ph.msg(S.form));saveP(ph.id,{done:true,output:out,form:Object.assign({},S.form)});setState({mode:'result',output:out,loading:false});}
+      catch(e){setState({mode:'form',err:'Erro ao gerar. Tenta novamente.',loading:false});}
+    }
+    content=div({background:CARD,borderRadius:'18px',border:'1px solid '+BOR,padding:'clamp(20px,4vw,34px)',animation:'fadeUp 0.3s ease both'},[...fields,errEl,btn('Gerar →',{},gerar)]);
+  }
+  else if(S.mode==='loading'){
+    var sp=div({width:'28px',height:'28px',border:'2px solid '+BOR,borderTop:'2px solid '+GOLD,borderRadius:'50%',animation:'spin 0.8s linear infinite',margin:'0 auto 14px'});
+    content=div({background:CARD,borderRadius:'18px',border:'1px solid '+BOR,padding:'60px 40px',textAlign:'center'},[sp,el('p',{color:MUT,fontSize:'14px'},'A gerar o teu resultado…')]);
+  }
+  else if(S.mode==='result'){
+    var phIdx=PHASES.findIndex(function(p){return p.id===ph.id;});
+    var next=PHASES[phIdx+1];
+    var cp=btn('Copiar',{flex:'1'},function(){
+      try{navigator.clipboard.writeText(S.output).catch(function(){var t=document.createElement('textarea');t.value=S.output;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);});}
+      catch(e){var t=document.createElement('textarea');t.value=S.output;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);}
+      cp.textContent='✓ Copiado';cp.style.background='rgba(74,138,90,0.08)';cp.style.color='#4a8a5a';
+      setTimeout(function(){cp.textContent='Copiar';cp.style.background=BTN;cp.style.color='#F5E6C8';},2000);
+    });
+    var nb=next?btn('Fase '+(ph.num+1)+' →',{flex:'1'},function(){setState({screen:next.id,phase:next,mode:'intro',form:{},output:'',err:'',qStep:'intro',qAi:0,qPi:0,qR1:{},qR2:{},qTop3:[],qDom:null,qSub:null,qTab:'perfil'});}):btn('← Início',{flex:'1'},function(){setState({screen:'home',phase:null});});
+    content=div({background:CARD,borderRadius:'18px',border:'1px solid '+BOR,padding:'clamp(20px,4vw,34px)',animation:'fadeUp 0.3s ease both'},[
+      div({display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'14px',paddingBottom:'12px',borderBottom:'1px solid '+BOR},[
+        el('div',{fontSize:'10px',letterSpacing:'2px',color:ph.cor,fontWeight:'700',textTransform:'uppercase'},'Resultado · Fase '+ph.num),
+        el('div',{fontSize:'16px'},ph.icon)
+      ]),
+      mdRender(S.output),
+      div({display:'flex',gap:'10px',marginTop:'18px',paddingTop:'14px',borderTop:'1px solid '+BOR},[cp,nb])
+    ]);
+  }
+
+  return div({minHeight:'100vh',background:BG,padding:'22px 18px 80px'},[div({maxWidth:'640px',margin:'0 auto'},[hd,content])]);
+}
+
+// ── AGENTE SCREEN ─────────────────────────────────────────────────────────────
+function drawAgente(){
+  var ag=S.agente;
+  if(!ag)return drawHome();
+
+  var hd=div({display:'flex',alignItems:'center',gap:'12px',marginBottom:'18px',paddingBottom:'14px',borderBottom:'1px solid '+BOR});
+  hd.appendChild(div({fontSize:'18px',color:ag.cor},ag.icon));
+  var info=div({flex:'1'});
+  info.appendChild(el('div',{fontSize:'9px',letterSpacing:'2px',color:ag.cor,fontWeight:'700',textTransform:'uppercase',marginBottom:'1px'},'Agente IBA™'));
+  info.appendChild(el('h2',{fontFamily:"'Cormorant Garamond',serif",fontSize:'20px',fontStyle:'italic',color:DARK,margin:'0'},ag.nome));
+  hd.appendChild(info);
+  hd.appendChild(btn('← Início',{width:'auto',padding:'6px 12px',fontSize:'11px',background:'none',border:'1px solid '+BOR,color:MUT},function(){setState({screen:'home',agente:null});}));
+
+  var content;
+  if(S.mode==='intro'){
+    content=div({background:CARD,borderRadius:'18px',border:'1px solid '+BOR,padding:'clamp(20px,4vw,34px)',animation:'fadeUp 0.3s ease both'},[
+      el('p',{fontSize:'13px',color:MUT,lineHeight:'1.85',marginBottom:'22px'},ag.desc),
+      btn('Iniciar agente →',{},function(){setState({mode:'form'});})
+    ]);
+  }
+  else if(S.mode==='form'){
+    var fields2=(ag.fields||[]).map(function(f,i){
+      var lbl=el('label',{display:'block',fontSize:'12px',fontWeight:'600',color:DARK,marginBottom:'6px'});
+      var reqTxt=f.req?'<span style="color:#c05050;margin-left:2px">*</span>':'<span style="font-size:11px;color:'+MUT+';margin-left:4px;font-weight:300">(opcional)</span>';
+      lbl.innerHTML='<span style="color:'+GOLD+';margin-right:4px">'+(i+1)+'.</span>'+f.label+reqTxt;
+      var hint=f.hint?el('p',{fontSize:'11px',color:MUT,fontStyle:'italic',margin:'3px 0 0'},f.hint):null;
+      var input;
+      if(f.ta===1||f.type==='textarea'){input=ta({},f.ph||'',S.form[f.key]||'',function(v){S.form[f.key]=v;});}
+      else{input=inp({},f.ph||'',S.form[f.key]||'',function(v){S.form[f.key]=v;});}
+      return div({marginBottom:'16px'},[lbl,input,hint]);
+    });
+    var errEl2=S.err?el('p',{color:'#c05050',fontSize:'12px',padding:'10px 14px',background:'rgba(194,80,80,0.05)',borderRadius:'8px',marginBottom:'10px'},S.err):null;
+    async function gerarAg(){
+      var miss=(ag.fields||[]).filter(function(f){return f.req&&!(S.form[f.key]||'').trim();});
+      if(miss.length){setState({err:'Preenche todos os campos obrigatórios.'});return;}
+      setState({mode:'loading',err:'',loading:true});
+      try{var out=await callAPI(ag.sys,ag.msg(S.form));setState({mode:'result',output:out,loading:false});}
+      catch(e){setState({mode:'form',err:'Erro ao gerar. Tenta novamente.',loading:false});}
+    }
+    content=div({background:CARD,borderRadius:'18px',border:'1px solid '+BOR,padding:'clamp(20px,4vw,34px)',animation:'fadeUp 0.3s ease both'},[...fields2,errEl2,btn('Gerar →',{},gerarAg)]);
+  }
+  else if(S.mode==='loading'){
+    var sp2=div({width:'28px',height:'28px',border:'2px solid '+BOR,borderTop:'2px solid '+GOLD,borderRadius:'50%',animation:'spin 0.8s linear infinite',margin:'0 auto 14px'});
+    content=div({background:CARD,borderRadius:'18px',border:'1px solid '+BOR,padding:'60px 40px',textAlign:'center'},[sp2,el('p',{color:MUT,fontSize:'14px'},'A gerar…')]);
+  }
+  else if(S.mode==='result'){
+    var cp2=btn('Copiar',{flex:'1'},function(){
+      try{navigator.clipboard.writeText(S.output).catch(function(){var t=document.createElement('textarea');t.value=S.output;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);});}
+      catch(e){var t=document.createElement('textarea');t.value=S.output;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);}
+      cp2.textContent='✓ Copiado';cp2.style.background='rgba(74,138,90,0.08)';cp2.style.color='#4a8a5a';
+      setTimeout(function(){cp2.textContent='Copiar';cp2.style.background=BTN;cp2.style.color='#F5E6C8';},2000);
+    });
+    content=div({background:CARD,borderRadius:'18px',border:'1px solid '+BOR,padding:'clamp(20px,4vw,34px)',animation:'fadeUp 0.3s ease both'},[
+      div({display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'14px',paddingBottom:'12px',borderBottom:'1px solid '+BOR},[
+        el('div',{fontSize:'10px',letterSpacing:'2px',color:ag.cor,fontWeight:'700',textTransform:'uppercase'},'Resultado · '+ag.nome),
+        el('div',{fontSize:'16px'},ag.icon)
+      ]),
+      mdRender(S.output),
+      div({display:'flex',gap:'10px',marginTop:'18px',paddingTop:'14px',borderTop:'1px solid '+BOR},[
+        cp2,
+        btn('Novo',{flex:'1',background:'none',border:'1.5px solid '+BOR,color:MUT,fontSize:'13px'},function(){setState({mode:'form',output:'',form:{},err:'',loading:false});})
+      ])
+    ]);
+  }
+  return div({minHeight:'100vh',background:BG,padding:'22px 18px 80px'},[div({maxWidth:'640px',margin:'0 auto'},[hd,content])]);
+}
+
+// ── QUIZ ──────────────────────────────────────────────────────────────────────
+function drawQuiz(){
+  var ph=S.phase;
+  if(!window.AD){
+    return div({minHeight:'100vh',background:BG,display:'flex',alignItems:'center',justifyContent:'center',padding:'24px'},[
+      div({maxWidth:'480px',textAlign:'center'},[
+        el('p',{fontSize:'14px',color:MUT,marginBottom:'20px'},'Os dados dos arquetipos ainda estão a carregar…'),
+        btn('← Início',{width:'auto',padding:'12px 24px'},function(){setState({screen:'home',phase:null});})
+      ])
+    ]);
+  }
+  if(S.qStep==='intro'){
+    return div({minHeight:'100vh',background:BG,display:'flex',alignItems:'center',justifyContent:'center',padding:'24px',animation:'fadeUp 0.3s ease both'},[
+      div({maxWidth:'480px',width:'100%',textAlign:'center'},[
+        el('h2',{fontFamily:"'Cormorant Garamond',serif",fontSize:'34px',fontStyle:'italic',color:DARK,marginBottom:'8px'},'Descoberta Arquetípica'),
+        el('p',{fontSize:'9px',letterSpacing:'3px',color:MUT,textTransform:'uppercase',marginBottom:'20px'},'Fase 2 · Révélation™'),
+        el('p',{fontSize:'13px',color:MUT,lineHeight:'1.8',marginBottom:'28px'},'15 afirmações × 12 arquetipos · subtipos · perfil completo com branding emocional'),
+        div({display:'flex',gap:'10px',justifyContent:'center'},[
+          btn('← Início',{width:'auto',padding:'12px 20px',background:'none',border:'1px solid '+BOR,color:MUT},function(){setState({screen:'home',phase:null});}),
+          btn('Iniciar →',{width:'auto',padding:'14px 32px'},function(){setState({qStep:'f1'});})
+        ])
+      ])
+    ]);
+  }
+
+  if(S.qStep==='f1'){
+    var ak=ARQS_ORDER[S.qAi];
+    var ad=window.AD[ak]||{};
+    var doneQ=Object.values(S.qR1).reduce(function(s,v){return s+v.length;},0);
+    var totalQ=ARQS_ORDER.length*15;
+    var pct=Math.round((doneQ/totalQ)*100);
+
+    var opts=div({});
+    OF1.forEach(function(op){
+      var ob=div({padding:'12px 16px',marginBottom:'8px',borderRadius:'10px',border:'1px solid '+BOR,background:CARD,color:MUT,fontSize:'13px',cursor:'pointer',display:'flex',alignItems:'center',gap:'12px',transition:'all 0.15s'});
+      ob.appendChild(el('span',{color:GOLD,fontWeight:'700',flexShrink:'0'},'·'));
+      ob.appendChild(document.createTextNode(op.label));
+      ob.onmouseenter=function(){ob.style.borderColor=GOLD+'60';ob.style.background=GOLD+'10';ob.style.color=DARK;};
+      ob.onmouseleave=function(){ob.style.borderColor=BOR;ob.style.background=CARD;ob.style.color=MUT;};
+      ob.onclick=function(){
+        var ak2=ARQS_ORDER[S.qAi];
+        var nr=Object.assign({},S.qR1);
+        nr[ak2]=(nr[ak2]||[]).concat(op.val);
+        var ad2=window.AD[ak2]||{};
+        if(S.qPi+1<(ad2.perguntas||[]).length){setState({qR1:nr,qPi:S.qPi+1});}
+        else if(S.qAi+1<ARQS_ORDER.length){setState({qR1:nr,qAi:S.qAi+1,qPi:0});}
+        else{
+          var pts=ARQS_ORDER.map(function(k){var d2=window.AD[k]||{};var tot=(nr[k]||[]).reduce(function(a,b){return a+b;},0);return{key:k,nome:d2.nome||k,pct:Math.round((tot/((d2.perguntas||[]).length*10))*100)};}).sort(function(a,b){return b.pct-a.pct;});
+          setState({qR1:nr,qTop3:pts.slice(0,3),qDom:pts[0],qStep:'f2'});
+        }
+      };
+      opts.appendChild(ob);
+    });
+
+    return div({minHeight:'100vh',background:BG,padding:'20px 18px 80px'},[
+      div({maxWidth:'620px',margin:'0 auto'},[
+        div({display:'flex',alignItems:'center',gap:'12px',marginBottom:'12px'},[
+          el('div',{fontSize:'16px',color:GOLD},'◆'),
+          div({flex:'1'},pbar(pct,(ad.nome||ak)+' · '+(S.qPi+1)+'/'+(ad.perguntas||[]).length))
+        ]),
+        div({background:CARD,borderRadius:'18px',border:'1px solid '+BOR,padding:'clamp(22px,5vw,38px)',animation:'fadeUp 0.2s ease both'},[
+          el('div',{fontSize:'10px',letterSpacing:'2.5px',color:GOLD,fontWeight:'700',textTransform:'uppercase',marginBottom:'12px'},'Fase 2 · '+(ad.nome||ak)),
+          el('p',{fontFamily:"'Cormorant Garamond',serif",fontSize:'clamp(16px,3vw,20px)',color:DARK,lineHeight:'1.65',margin:'0 0 24px'},'"'+((ad.perguntas||[])[S.qPi]||'')+'"'),
+          opts
+        ])
+      ])
+    ]);
+  }
+
+  if(S.qStep==='f2'){
+    var dom=S.qDom;
+    var subs=(dom&&window.AD[dom.key]&&window.AD[dom.key].subtipos)||[];
+    var allQ=[];subs.forEach(function(s){(s.afirmacoes||[]).forEach(function(a){allQ.push({sub:s.nome,txt:a});});});
+    var f2i=Object.values(S.qR2).reduce(function(s,v){return s+v.length;},0);
+    var q2=allQ[f2i];
+    var pct2=allQ.length>0?Math.round((f2i/allQ.length)*100):0;
+
+    var opts2=div({});
+    OF2.forEach(function(op){
+      var ob=div({padding:'12px 16px',marginBottom:'8px',borderRadius:'10px',border:'1px solid '+BOR,background:CARD,color:MUT,fontSize:'13px',cursor:'pointer',display:'flex',alignItems:'center',gap:'12px',transition:'all 0.15s'});
+      ob.appendChild(el('span',{color:GOLD,fontWeight:'700',flexShrink:'0'},'·'));
+      ob.appendChild(document.createTextNode(op.label));
+      ob.onmouseenter=function(){ob.style.borderColor=GOLD+'60';ob.style.background=GOLD+'10';ob.style.color=DARK;};
+      ob.onmouseleave=function(){ob.style.borderColor=BOR;ob.style.background=CARD;ob.style.color=MUT;};
+      ob.onclick=function(){
+        if(!q2)return;
+        var nf2=Object.assign({},S.qR2);nf2[q2.sub]=(nf2[q2.sub]||[]).concat(op.val);
+        if(f2i+1>=allQ.length){
+          var ponts=subs.map(function(s){var tot=(nf2[s.nome]||[]).reduce(function(a,b){return a+b;},0);return Object.assign({},s,{pct:Math.round((tot/((s.afirmacoes||[]).length*10))*100)});}).sort(function(a,b){return b.pct-a.pct;});
+          var result={done:true,dom:S.qDom,sub:ponts[0],top3:S.qTop3};
+          saveP('fase2',result);
+          setState({qR2:nf2,qSub:ponts[0],qStep:'resultado'});
+        }else{setState({qR2:nf2});}
+      };
+      opts2.appendChild(ob);
+    });
+
+    var badges=div({display:'flex',gap:'8px',marginBottom:'12px',flexWrap:'wrap'});
+    (S.qTop3||[]).forEach(function(t,i){
+      var b=div({padding:'4px 12px',borderRadius:'999px',background:i===0?GOLD+'18':CARD,border:'1px solid '+(i===0?GOLD+'50':BOR)});
+      b.appendChild(el('span',{fontSize:'9px',color:GOLD,fontWeight:'700',letterSpacing:'1.5px',textTransform:'uppercase'},i===0?'Dom ':i===1?'2º ':'3º '));
+      b.appendChild(el('span',{fontSize:'11px',color:MUT},t.nome+' · '+t.pct+'%'));
+      badges.appendChild(b);
+    });
+
+    return div({minHeight:'100vh',background:BG,padding:'20px 18px 80px'},[
+      div({maxWidth:'620px',margin:'0 auto'},[
+        div({display:'flex',alignItems:'center',gap:'12px',marginBottom:'10px'},[
+          el('div',{fontSize:'16px',color:GOLD},'◆'),
+          div({flex:'1'},pbar(pct2,'Subtipos · '+(dom?dom.nome:'')))
+        ]),
+        badges,
+        q2?div({background:CARD,borderRadius:'18px',border:'1px solid '+BOR,padding:'clamp(22px,5vw,38px)',animation:'fadeUp 0.2s ease both'},[
+          el('div',{fontSize:'10px',letterSpacing:'2.5px',color:GOLD,fontWeight:'700',textTransform:'uppercase',marginBottom:'12px'},'Subtipo · '+q2.sub),
+          el('p',{fontFamily:"'Cormorant Garamond',serif",fontSize:'clamp(16px,3vw,20px)',color:DARK,lineHeight:'1.65',margin:'0 0 24px'},'"'+q2.txt+'"'),
+          opts2
+        ]):null
+      ])
+    ]);
+  }
+
+  if(S.qStep==='resultado'){
+    var dom2=S.qDom;
+    var dDad=window.AD[dom2?dom2.key:'']||{};
+    var tabs=['perfil','branding','subtipos','top3','palavras'];
+    var TL={perfil:'Perfil',branding:'Branding',subtipos:'Subtipos',top3:'Top 3',palavras:'Palavras'};
+
+    var tabBar=div({display:'flex',background:CARD,borderRadius:'12px',padding:'4px',border:'1px solid '+BOR,marginBottom:'10px',overflowX:'auto',gap:'2px'});
+    tabs.forEach(function(t){
+      var tb=el('button',{flex:'0 0 auto',padding:'8px 12px',borderRadius:'9px',border:'none',background:S.qTab===t?GOLD+'18':'transparent',color:S.qTab===t?DARK:MUT,fontSize:'11px',fontWeight:S.qTab===t?'700':'400',cursor:'pointer',fontFamily:'inherit',whiteSpace:'nowrap'},TL[t]);
+      tb.onclick=function(){setState({qTab:t});};
+      tabBar.appendChild(tb);
+    });
+
+    var tc=div({});var t=S.qTab;
+    if(t==='perfil'){
+      [{l:'Desejo',v:dDad.desejo},{l:'Meta',v:dDad.meta},{l:'Medo',v:dDad.medo},{l:'Estratégia',v:dDad.estrategia},{l:'Armadilha',v:dDad.armadilha},{l:'Dons',v:dDad.dons}].filter(function(x){return x.v;}).forEach(function(item){
+        var row=div({marginBottom:'12px',paddingBottom:'12px',borderBottom:'1px solid '+BOR});
+        row.appendChild(el('div',{fontSize:'10px',letterSpacing:'2px',color:GOLD,fontWeight:'700',textTransform:'uppercase',marginBottom:'3px'},item.l));
+        row.appendChild(el('p',{fontSize:'13px',color:DARK,lineHeight:'1.7',margin:'0'},item.v));
+        tc.appendChild(row);
+      });
+    }
+    else if(t==='branding'){
+      var tCard=div({padding:'14px 18px',borderRadius:'12px',background:GOLD+'0A',border:'1px solid '+GOLD+'30',marginBottom:'16px'});
+      tCard.appendChild(el('div',{fontSize:'9px',letterSpacing:'2px',color:GOLD,fontWeight:'700',textTransform:'uppercase',marginBottom:'5px'},'Tagline'));
+      tCard.appendChild(el('p',{fontFamily:"'Cormorant Garamond',serif",fontSize:'18px',color:DARK,fontStyle:'italic',margin:'0'},'"'+(dDad.tagline||'')+'"'));
+      tc.appendChild(tCard);
+      (dDad.frases||[]).forEach(function(f2,i){
+        var fc=div({padding:'10px 14px',marginBottom:'8px',borderRadius:'10px',border:'1px solid '+(i===0?GOLD+'35':BOR),background:i===0?GOLD+'08':BG});
+        fc.appendChild(el('p',{fontSize:'13px',color:DARK,fontStyle:'italic',margin:'0',lineHeight:'1.6'},'"'+f2+'"'));
+        tc.appendChild(fc);
+      });
+    }
+    else if(t==='subtipos'){
+      tc.appendChild(el('p',{fontSize:'12px',color:MUT,marginBottom:'12px'},'Dominante: '+(S.qSub?S.qSub.nome:'')));
+      (dDad.subtipos||[]).forEach(function(s){
+        var isD=s.nome===(S.qSub?S.qSub.nome:'');
+        var sc=div({marginBottom:'10px',padding:'12px 14px',borderRadius:'12px',border:'1.5px solid '+(isD?GOLD+'50':BOR),background:isD?GOLD+'08':BG});
+        if(isD){sc.appendChild(el('div',{fontSize:'9px',letterSpacing:'2px',color:GOLD,fontWeight:'700',textTransform:'uppercase',marginBottom:'4px'},'Teu subtipo'));}
+        sc.appendChild(el('div',{fontSize:'13px',fontWeight:isD?'700':'400',color:isD?DARK:MUT,marginBottom:'4px'},s.nome));
+        sc.appendChild(el('p',{fontSize:'12px',color:isD?DARK+'CC':MUT,lineHeight:'1.65',margin:'0'},(s.desc||'').substring(0,200)));
+        tc.appendChild(sc);
+      });
+    }
+    else if(t==='top3'){
+      var labs=['Dominante','Secundário','Terciário'];
+      (S.qTop3||[]).forEach(function(t2,i){
+        var row=div({marginBottom:'10px',padding:'14px 16px',borderRadius:'14px',border:'1.5px solid '+(i===0?GOLD+'50':BOR),background:i===0?GOLD+'08':BG});
+        var top2=div({display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'8px'});
+        var left=div({});
+        left.appendChild(el('div',{fontSize:'9px',letterSpacing:'2px',color:GOLD,fontWeight:'700',textTransform:'uppercase',marginBottom:'2px'},labs[i]));
+        left.appendChild(el('div',{fontFamily:"'Cormorant Garamond',serif",fontSize:'19px',fontWeight:'700',color:DARK},t2.nome));
+        top2.appendChild(left);top2.appendChild(el('div',{fontSize:'19px',fontWeight:'700',color:GOLD},t2.pct+'%'));
+        row.appendChild(top2);
+        var barEl=div({height:'3px',background:BOR,borderRadius:'999px',overflow:'hidden'});
+        barEl.appendChild(div({height:'100%',width:t2.pct+'%',background:'linear-gradient(90deg,'+GOLD+','+GOLD2+')',borderRadius:'999px'}));
+        row.appendChild(barEl);
+        tc.appendChild(row);
+      });
+    }
+    else if(t==='palavras'){
+      var pw=div({display:'flex',flexWrap:'wrap',gap:'8px',marginBottom:'18px'});
+      (dDad.palavras||[]).forEach(function(p,i){
+        var badge=el('span',{padding:'5px 12px',borderRadius:'999px',border:'1px solid '+(i<5?GOLD+'50':BOR),background:i<5?GOLD+'10':CARD,fontSize:'12px',color:i<5?DARK:MUT,fontWeight:i<5?'600':'400'},p);
+        pw.appendChild(badge);
+      });
+      tc.appendChild(pw);
+      (dDad.frases||[]).forEach(function(f2){
+        var fc=div({padding:'10px 14px',marginBottom:'6px',borderRadius:'10px',border:'1px solid '+BOR,background:BG});
+        fc.appendChild(el('p',{fontSize:'13px',color:DARK,fontStyle:'italic',margin:'0'},'"'+f2+'"'));
+        tc.appendChild(fc);
+      });
+    }
+
+    var next3=PHASES[2];
+    return div({minHeight:'100vh',background:BG,padding:'22px 18px 80px',animation:'fadeUp 0.3s ease both'},[
+      div({maxWidth:'640px',margin:'0 auto'},[
+        div({textAlign:'center',marginBottom:'18px',paddingBottom:'16px',borderBottom:'1px solid '+BOR},[
+          el('div',{fontSize:'9px',letterSpacing:'3px',color:MUT,textTransform:'uppercase',marginBottom:'6px'},'Révélation™ · Perfil Arquetípico'),
+          el('h2',{fontFamily:"'Cormorant Garamond',serif",fontSize:'clamp(22px,5vw,30px)',fontStyle:'italic',color:DARK,margin:'0 0 3px'},dDad.nome||''),
+          S.qSub?el('p',{fontSize:'12px',color:GOLD,fontWeight:'600',margin:'3px 0'},'Subtipo: '+S.qSub.nome):null,
+          el('p',{fontSize:'12px',color:MUT,fontStyle:'italic',margin:'3px 0 0'},'"'+(dDad.tagline||'')+'"')
+        ]),
+        tabBar,
+        div({background:CARD,borderRadius:'18px',border:'1px solid '+BOR,padding:'clamp(16px,4vw,28px)',marginBottom:'10px'},tc),
+        div({display:'flex',gap:'10px'},[
+          btn('Reiniciar',{flex:'1',background:'none',border:'1.5px solid '+BOR,color:MUT,fontSize:'12px'},function(){setState({qStep:'intro',qAi:0,qPi:0,qR1:{},qR2:{},qTop3:[],qDom:null,qSub:null,qTab:'perfil'});}),
+          btn('Fase 3 →',{flex:'1'},function(){setState({screen:'fase3',phase:next3,mode:'intro',form:{},output:'',err:'',loading:false});})
+        ])
+      ])
+    ]);
+  }
+  return div({});
+}
+
+// ── MAIN DRAW ─────────────────────────────────────────────────────────────────
+function draw(){
+  var app=document.getElementById('app');
+  app.innerHTML='';
+  var view;
+  var ph=S.phase;
+  if(S.screen==='home')view=drawHome();
+  else if(S.screen==='agente')view=drawAgente();
+  else if(S.screen==='fase2'||(ph&&ph.isQuiz))view=drawQuiz();
+  else if(ph)view=drawPhase();
+  else view=drawHome();
+  app.appendChild(view);
+}
+draw();
 </script>
+
+<!-- Archetype data loaded from Hemera -->
 <script>
+// Placeholder - archetype data will be injected here
+// For this artifact version, quiz shows "loading" message
+// until data is available
 const ARQUETIPOS_DATA = {
   INOCENTE: {
     id: "INOCENTE",
@@ -352,630 +1163,10 @@ const ARQUETIPOS_DATA = {
     ],
   },
 };
-var AD=ARQUETIPOS_DATA;
 var ARQS_ORDER=["INOCENTE","SABIA","EXPLORADORA","REBELDE","HEROINA","MAGA","CIDADA","AMANTE","PERFORMATICA","CUIDADORA","CRIADORA","GOVERNANTE"];
 var OF1=[{val:0,label:"Não me identifico"},{val:3,label:"Identifico-me pouco"},{val:6,label:"Identifico-me moderadamente"},{val:8,label:"Identifico-me bastante"},{val:10,label:"Identifico-me completamente"}];
 var OF2=[{val:0,label:"Nada a ver comigo"},{val:5,label:"Parcialmente"},{val:10,label:"É exactamente como me vejo"}];
-</script><script>
-// ── API ───────────────────────────────────────────────────────────────────────
-async function callAPI(sys, msg, tokens) {
-  tokens = tokens || 4096;
-  var body = {
-    model:"claude-sonnet-4-20250514",
-    max_tokens:tokens,
-    messages:[{role:"user",content:msg}]
-  };
-  if(sys) body.system = sys;
-  var r = await fetch("https://api.anthropic.com/v1/messages",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify(body)
-  });
-  if(!r.ok) throw new Error("HTTP "+r.status);
-  var d = await r.json();
-  var text = d?.content?.[0]?.text;
-  if(text) return text;
-  throw new Error("Sem resposta da API");
-}
-
-// ── PROGRESS (localStorage) ───────────────────────────────────────────────────
-function getProgress(user) {
-  try { return JSON.parse(localStorage.getItem("rev_progress_"+user)||"{}"); } catch(e) { return {}; }
-}
-function saveProgress(user, phase, data) {
-  var p = getProgress(user);
-  p[phase] = data;
-  localStorage.setItem("rev_progress_"+user, JSON.stringify(p));
-}
-function isPhaseComplete(user, phase) {
-  var p = getProgress(user);
-  return p[phase] && p[phase].done === true;
-}
-
-// ── STATE ─────────────────────────────────────────────────────────────────────
-var S = {
-  user: sessionStorage.getItem("rev_user")||"",
-  userName: sessionStorage.getItem("rev_name")||"",
-  screen: "home", // login|home|phase1|phase2|phase3|phase4|phase5|result
-  phase: null,
-  mode: "intro",  // intro|form|loading|result
-  form: {},
-  output: "",
-  // Quiz state
-  qFase:"intro",qAi:0,qPi:0,qR1:{},qR2:{},qTop3:[],qDom:null,qSub:null,qTab:"perfil"
-};
-function set(o){Object.assign(S,o);draw();}
-
-// ── PHASES CONFIG ─────────────────────────────────────────────────────────────
-var PHASES = [
-  {
-    id:"fase1", num:1, nome:"Mentalidade", 
-    sub:"A fundação de tudo",
-    desc:"Antes de qualquer estratégia, existe uma decisão. Nesta fase, identificas as crenças que te têm impedido, defines a mulher que escolhes tornar-te e estabeleces a mentalidade CEO que sustenta tudo o que vem a seguir.",
-    cor:"#7a9a8a",
-    icon:"✦",
-    fields:[
-      {key:"situacao", label:"Onde estás agora", ph:"Descreve a tua situação actual — o que fazes, o que te falta, onde sentes que estás presa", req:1, ta:1},
-      {key:"crencas", label:"O que te diz a voz que duvida de ti", ph:"Aquela voz interna que diz que não podes, que não é para ti, que não estás preparada — o que diz exactamente?", req:1, ta:1},
-      {key:"identidade", label:"A mulher que escolhes tornar-te", ph:"Não quem achas que podes ser — quem escolhes ser. Descreve-a.", req:1, ta:1},
-      {key:"compromisso", label:"O teu compromisso", ph:"O que estás disposta a fazer de diferente a partir de hoje?", req:1, ta:1},
-    ],
-    sys: function() { return 'És a mentora de mentalidade sénior da Maison Isabella. Português de Portugal. Linguagem de luxo — íntima, precisa, sem motivacional vazio, sem clichés. Nunca uses "empoderamento" nem "jornada". Cada secção deve ser desenvolvida e substancial — não resumos, mas análises reais com peso e detalhe.\n\nAnalisa profundamente o que a cliente partilhou e entrega:\n\n## A TUA MENTALIDADE ACTUAL\nUma análise honesta e sem julgamento do padrão mental que emerge das suas respostas. Pelo menos 3 parágrafos. Identifica o que está por baixo das palavras.\n\n## AS 3 CRENÇAS QUE ESTÃO A CUSTAR-TE\nCada crença com: a frase exacta como ela a vive internamente, de onde provavelmente vem (origem), e o custo real que está a pagar por a manter. Desenvolve cada uma com substância.\n\n## A MUDANÇA DE PERSPECTIVA\nPara cada uma das 3 crenças, a perspectiva que a substitui — não positiva, mas precisa e fundamentada. Não é afirmação — é raciocínio que a faz ver diferente.\n\n## A TUA IDENTIDADE CEO\nNão uma lista de adjectivos. Uma descrição rica e específica da mulher CEO que ela já é e está a tornar-se — baseada exactamente no que ela escreveu. Pelo menos 2 parágrafos. Presente, não futuro.\n\n## O TEU COMPROMISSO REFINADO\nO que ela escreveu, reescrito com a precisão, o peso e a elegância que merece. Uma declaração que ela queira guardar.\n\n## A PRIMEIRA DECISÃO\nUma acção concreta, específica e realizável nas próximas 24 horas — que seja coerente com a sua situação real e demonstre a nova identidade na prática.\n\n## CARTA DA TUA EU DO FUTURO\nEscreve uma carta em primeira pessoa, assinada pela versão futura dela — daqui a 12 meses. A carta deve: reconhecer o momento difícil em que ela está agora, mencionar elementos específicos do que ela partilhou, celebrar o que ela construiu, e dar-lhe a certeza de que a decisão de avançar foi a certa. Tom íntimo, sério e real — não inspiracional vazio. Mínimo 200 palavras.'; },
-    msg: function(f) { return "SITUAÇÃO: "+f.situacao+"\nCRENÇAS: "+f.crencas+"\nIDENTIDADE ESCOLHIDA: "+f.identidade+"\nCOMPROMISSO: "+f.compromisso+"\n\nGera o relatório de mentalidade."; }
-  },
-  {
-    id:"fase2", num:2, nome:"Descoberta Arquetípica",
-    sub:"Quem és antes de qualquer estratégia",
-    desc:"O teu arquétipo dominante é a fundação da tua marca, da tua voz e da tua oferta. Nesta fase, descobres quem és — não quem achas que deves ser.",
-    cor:"#C5A55A",
-    icon:"◆",
-    isQuiz: true
-  },
-  {
-    id:"fase3", num:3, nome:"Posicionamento Estratégico",
-    sub:"A tua posição única no mercado",
-    desc:"Com a tua identidade definida, é hora de construir a tua posição no mercado. 14 entregáveis que definem exactamente quem serves, como apareces e porque és insubstituível.",
-    cor:"#8a7a9a",
-    icon:"◈",
-    fields:[
-      {key:"expertiseArea", label:"A tua área de expertise", ph:"O que sabes fazer melhor do que a maioria — com honestidade", req:1, ta:1},
-      {key:"clienteIdeal", label:"A tua cliente ideal", ph:"Quem é ela? Idade, contexto, o que está a viver, o que quer", req:1, ta:1},
-      {key:"grandeProblema", label:"O grande problema do mercado", ph:"O problema maior que o teu mercado enfrenta — o que todos sentem mas ninguém diz directamente", req:1, ta:1},
-      {key:"transformacao", label:"A transformação que entregas", ph:"Qual é o antes e o depois da tua cliente — em termos concretos", req:1, ta:1},
-      {key:"diferencialVida", label:"O que na tua vida te torna única", ph:"A tua história, o que viveste, o que sabes por dentro que ninguém te ensinou", req:1, ta:1},
-    ],
-    sys: function() { return 'És a estrategista de posicionamento sénior da Maison Isabella. Português de Portugal. Linguagem de luxo — precisa, directa, sem clichés. Nunca uses "empoderamento". Cada secção deve ser desenvolvida e accionável — não bullet points soltos mas análise real com exemplos específicos da cliente.\n\nCom base no que a cliente partilhou, entrega os 14 elementos do Posicionamento Estratégico IBA™:\n\n## 01 · NICHO E SUB-NICHO\nEspecífico, diferenciado e baseado nos dados reais desta cliente. Explica o porquê desta escolha.\n\n## 02 · SLOGAN\n3 opções — cada uma com racional. Curtas, memoráveis, verdadeiras ao que ela é.\n\n## 03 · GRANDE PROBLEMA DO MERCADO\nO problema macro que todos no mercado sentem mas ninguém articula com honestidade. Mínimo 2 parágrafos.\n\n## 04 · GRANDE PROBLEMA DO NICHO E SUB-NICHO\nMais específico e próximo da cliente ideal desta mulher. O que ela vive no dia a dia que a faz procurar ajuda.\n\n## 05 · SOLUÇÃO ÚNICA\nO que esta cliente oferece de diferente para resolver este problema. Baseado na sua expertise e diferencial.\n\n## 06 · METODOLOGIA\nUm nome elegante para o método desta cliente + a estrutura em 3 a 5 passos. Com descrição de cada passo.\n\n## 07 · DIFERENCIAL ÚNICO\nO que a torna incopiável. Baseado especificamente na sua história, vivências e expertise — não genérico.\n\n## 08 · CRENÇA LIMITANTE DO PÚBLICO\nO que a cliente ideal acredita que a impede de avançar — e que esta mulher pode desconstruir.\n\n## 09 · INIMIGOS EM COMUM\nO que esta mulher e a sua cliente ideal detestam — o inimigo que as une e cria pertencimento.\n\n## 10 · POSICIONAMENTO ÚNICO ENCANTADOR\nA frase que define exactamente quem é no mercado. Uma linha. Testada contra: é específica? é verdadeira? é memorável?\n\n## 11 · MAPA DAS CRENÇAS\n5 crenças que a cliente ideal precisa de adoptar para trabalhar com esta mulher. Detalhadas e psicologicamente fundamentadas.\n\n## 12 · MAPA DAS FRUSTRAÇÕES\n7 frustrações profundas da cliente ideal — as que ela sente mas raramente verbaliza.\n\n## 13 · MAPA DOS DESEJOS\nO que ela quer — em voz alta (o que diz) e em silêncio (o que não admite mas sonha).\n\n## 14 · MAPA DOS SONHOS\nO futuro que ela imagina para si. Como é a vida que ela quer viver. Com detalhe e especificidade.'; }
-    msg: function(f) { return "EXPERTISE: "+f.expertiseArea+"\nCLIENTE IDEAL: "+f.clienteIdeal+"\nGRANDE PROBLEMA: "+f.grandeProblema+"\nTRANSFORMAÇÃO: "+f.transformacao+"\nDIFERENCIAL DE VIDA: "+f.diferencialVida+"\n\nGera os 14 elementos do posicionamento estratégico."; }
-  },
-  {
-    id:"fase4", num:4, nome:"Oferta High Ticket",
-    sub:"O que vendes e o que cobra",
-    desc:"Com identidade e posicionamento definidos, é hora de construir a tua oferta premium. Uma oferta que o mercado paga não porque é barata — mas porque é irrecusável.",
-    cor:"#9a7a6a",
-    icon:"◇",
-    fields:[
-      {key:"servico", label:"O serviço ou programa que queres criar", ph:"O que entregas — formato, duração, número de pessoas", req:1, ta:1},
-      {key:"resultado", label:"O resultado tangível que prometes", ph:"Ao fim de X tempo, a cliente terá ou será capaz de...", req:1, ta:1},
-      {key:"preco", label:"O preço que queres cobrar", ph:"O preço que achas que mereces cobrar — não o que achas que pagarão", req:1},
-      {key:"medos", label:"O que te impede de cobrar este preço", ph:"O que sentes quando pensas em apresentar este valor a uma cliente?", req:1, ta:1},
-    ],
-    sys: function() { return 'És a especialista em ofertas high ticket da Maison Isabella. Português de Portugal. Linguagem de luxo — directa, com autoridade, sem condescendência. Nunca uses "empoderamento". Cada secção desenvolvida e accionável — com exemplos reais baseados no que a cliente partilhou.\n\n## NOME DA OFERTA\n3 opções com racional detalhado. Elegantes, memoráveis, premium — cada uma com a explicação de porque funciona.\n\n## A PROMESSA CENTRAL\nUma linha. Específica, mensurável e irrecusável. Com análise de porque esta promessa ressoa com a cliente ideal.\n\n## ESTRUTURA DA OFERTA\nO que está incluído — mínimo 5 componentes detalhados com valor percebido de cada um explicado.\n\n## O PREÇO CORRECTO\nAnálise honesta: está abaixo, no ponto ou acima? Com referências ao que o mercado cobra por ofertas equivalentes e recomendação clara.\n\n## JUSTIFICAÇÃO DE VALOR\nAs palavras exactas para apresentar este preço sem pedir desculpa. O raciocínio completo a usar numa conversa real.\n\n## OS 3 BÓNUS ESTRATÉGICOS\nQue aumentam o valor percebido sem aumentar o tempo. Cada bónus com nome elegante, descrição e valor percebido atribuído.\n\n## A GARANTIA\nTexto exacto da garantia — que elimina o risco e demonstra confiança total no que entrega.\n\n## AS 3 OBJECÇÕES PRINCIPAIS E RESPOSTAS\nAs objecções reais da cliente ideal — e a resposta exacta, palavra por palavra, para cada uma.\n\n## HEADLINE DA OFERTA\n3 versões para contextos diferentes: Instagram, página de venda e conversa directa. Com análise do que cada uma activa emocionalmente.'; }
-    msg: function(f) { return "SERVIÇO: "+f.servico+"\nRESULTADO: "+f.resultado+"\nPREÇO: "+f.preco+"\nMEDOS: "+f.medos+"\n\nConstrói a oferta high ticket."; }
-  },
-  {
-    id:"fase5", num:5, nome:"Académie Digitale™",
-    sub:"A implementação do teu sistema digital",
-    desc:"Com a tua identidade, posicionamento e oferta definidos, é hora de construir o sistema digital que entrega tudo isto ao mercado. A Académie Digitale™ dá-te as ferramentas, as plataformas e os sistemas.",
-    cor:"#6a7a9a",
-    icon:"◉",
-    isLink: true,
-    linkText: "Aceder à Académie Digitale™",
-    linkDesc: "Plataformas · Beacons · Stan Store · Lançamento · Tudo sobre Instagram · E muito mais"
-  }
-];
-
-// ── DOM HELPERS ───────────────────────────────────────────────────────────────
-function div(style,children){
-  var d=document.createElement("div");
-  if(style)Object.assign(d.style,style);
-  if(children)[].concat(children).forEach(function(c){if(c!=null)d.appendChild(typeof c==="string"?document.createTextNode(c):c);});
-  return d;
-}
-function el(tag,style,text){
-  var e=document.createElement(tag);
-  if(style)Object.assign(e.style,style);
-  if(text!=null)e.textContent=text;
-  return e;
-}
-function logoEl(h){
-  var i=document.createElement("img");
-  i.src=LOGO;i.alt="Maison Isabella";
-  i.style.height=h+"px";i.style.display="block";
-  return i;
-}
-function btnEl(text,style,onClick){
-  var b=el("button",Object.assign({width:"100%",padding:"15px",background:BTN,
-    color:"#F5E6C8",border:"none",borderRadius:"10px",fontSize:"14px",fontWeight:"600",
-    cursor:"pointer",fontFamily:"inherit",letterSpacing:"0.4px"},style||{}),text);
-  b.addEventListener("click",onClick);
-  return b;
-}
-function optBtn(label,onClick){
-  var b=div({padding:"13px 18px",marginBottom:"8px",borderRadius:"10px",
-    border:"1px solid "+BOR,background:CARD,color:MUT,fontSize:"14px",
-    cursor:"pointer",display:"flex",alignItems:"center",gap:"12px",transition:"all 0.15s"});
-  b.appendChild(div({width:"6px",height:"6px",borderRadius:"50%",background:BOR,flexShrink:"0"}));
-  b.appendChild(document.createTextNode(label));
-  b.addEventListener("mouseenter",function(){b.style.borderColor=GOLD+"60";b.style.background=GOLD+"10";b.style.color=DARK;});
-  b.addEventListener("mouseleave",function(){b.style.borderColor=BOR;b.style.background=CARD;b.style.color=MUT;});
-  b.addEventListener("click",onClick);
-  return b;
-}
-function pbar(pct,label){
-  return div({marginBottom:"20px"},[
-    div({display:"flex",justifyContent:"space-between",marginBottom:"6px"},[
-      el("span",{fontSize:"10px",letterSpacing:"2px",color:GOLD,fontWeight:"700",textTransform:"uppercase"},label),
-      el("span",{fontSize:"10px",color:MUT},pct+"%")
-    ]),
-    div({height:"3px",background:BOR,borderRadius:"999px",overflow:"hidden"},[
-      div({height:"100%",width:pct+"%",background:"linear-gradient(90deg,"+GOLD+",#DEB96A)",borderRadius:"999px",transition:"width 0.4s"})
-    ])
-  ]);
-}
-function mdRender(text){
-  var w=div();
-  if(!text)return w;
-  text.split("\n").forEach(function(line){
-    var n;
-    if(line.startsWith("## "))n=el("h2",{fontSize:"14px",fontWeight:"700",color:GOLD,margin:"22px 0 8px",paddingBottom:"5px",borderBottom:"1px solid "+BOR},line.slice(3));
-    else if(line.startsWith("### "))n=el("h3",{fontSize:"13px",fontWeight:"600",color:DARK,margin:"14px 0 4px"},line.slice(4));
-    else if(line.startsWith("**")&&line.endsWith("**"))n=el("p",{fontSize:"13px",fontWeight:"700",color:DARK,margin:"6px 0"},line.slice(2,-2));
-    else if(line.startsWith("- ")){
-      n=div({display:"flex",gap:"8px",marginBottom:"5px"});
-      n.appendChild(el("span",{color:GOLD,fontWeight:"700",flexShrink:"0"},"·"));
-      n.appendChild(el("span",{fontSize:"13px",color:"#5a4a38",lineHeight:"1.65"},line.slice(2)));
-    }
-    else if(line.trim()==="")n=div({height:"4px"});
-    else n=el("p",{fontSize:"13px",color:"#5a4a38",lineHeight:"1.7",margin:"1px 0"},line);
-    if(n)w.appendChild(n);
-  });
-  return w;
-}
-
-// ── LOGIN ─────────────────────────────────────────────────────────────────────
-function drawLogin(){
-  var email="",pass="";
-  var errEl=el("p",{color:"#c05050",fontSize:"12px",textAlign:"center",marginBottom:"14px",display:"none"});
-  var ei=document.createElement("input");
-  Object.assign(ei.style,{width:"100%",padding:"13px 16px",height:"50px",background:BG,
-    border:"1.5px solid "+BOR,borderRadius:"9px",fontSize:"14px",color:DARK,outline:"none",fontFamily:"inherit",boxSizing:"border-box"});
-  ei.type="email";ei.placeholder="o.teu@email.com";
-  ei.addEventListener("input",function(e){email=e.target.value;errEl.style.display="none";});
-  var pi=document.createElement("input");
-  Object.assign(pi.style,{width:"100%",padding:"13px 16px",height:"50px",background:BG,
-    border:"1.5px solid "+BOR,borderRadius:"9px",fontSize:"14px",color:DARK,outline:"none",fontFamily:"inherit",boxSizing:"border-box"});
-  pi.type="password";pi.placeholder="••••••••";
-  pi.addEventListener("input",function(e){pass=e.target.value;errEl.style.display="none";});
-  pi.addEventListener("keydown",function(e){if(e.key==="Enter")login();});
-  ei.addEventListener("keydown",function(e){if(e.key==="Enter")pi.focus();});
-  function login(){
-    var u=USERS.find(function(u){return u.email.toLowerCase()===email.toLowerCase().trim()&&u.password===pass.trim();});
-    if(u){sessionStorage.setItem("rev_user",u.email);sessionStorage.setItem("rev_name",u.name||u.email);set({user:u.email,userName:u.name||u.email,screen:"home"});}
-    else{errEl.textContent="Credenciais inválidas.";errEl.style.display="block";}
-  }
-  var lw=div({textAlign:"center",marginBottom:"18px"});lw.appendChild(logoEl(80));
-  return div({minHeight:"100vh",background:BG,display:"flex",alignItems:"center",justifyContent:"center",padding:"24px"},[
-    div({width:"100%",maxWidth:"400px"},[
-      lw,
-      el("p",{fontSize:"9px",letterSpacing:"3px",color:MUT,textTransform:"uppercase",textAlign:"center",marginBottom:"8px"},"Maison Isabella"),
-      el("h1",{fontFamily:"'Playfair Display',serif",fontSize:"clamp(36px,8vw,48px)",fontWeight:"700",fontStyle:"italic",color:DARK,textAlign:"center",margin:"0 0 4px",lineHeight:"1.1"},"Révélation™"),
-      el("p",{fontSize:"11px",letterSpacing:"3px",color:GOLD,textTransform:"uppercase",textAlign:"center",marginBottom:"6px"},"Quiet Business System"),
-      el("p",{fontSize:"12px",color:MUT,textAlign:"center",marginBottom:"28px",lineHeight:"1.7",fontStyle:"italic"},"Da identidade à oferta — guiada por inteligência."),
-      div({background:CARD,borderRadius:"16px",border:"1px solid "+BOR,padding:"28px",boxShadow:"0 4px 24px rgba(26,10,0,0.06)"},[
-        el("label",{display:"block",fontSize:"11px",fontWeight:"600",color:DARK,marginBottom:"7px"},"Email"),
-        div({marginBottom:"18px"},ei),
-        el("label",{display:"block",fontSize:"11px",fontWeight:"600",color:DARK,marginBottom:"7px"},"Password"),
-        div({marginBottom:"20px"},pi),
-        errEl,
-        btnEl("Entrar →",{},login)
-      ])
-    ])
-  ]);
-}
-
-// ── HOME — JOURNEY ────────────────────────────────────────────────────────────
-function drawHome(){
-  var progress = getProgress(S.user);
-  var completedCount = PHASES.filter(function(p){return isPhaseComplete(S.user,p.id);}).length;
-  var pct = Math.round((completedCount/PHASES.length)*100);
-
-  // Header
-  var hd=div({display:"flex",alignItems:"center",gap:"14px",marginBottom:"24px",paddingBottom:"18px",borderBottom:"1px solid "+BOR});
-  hd.appendChild(logoEl(40));
-  var brand=div({flex:"1"});
-  brand.appendChild(el("h1",{fontFamily:"'Playfair Display',serif",fontSize:"19px",fontWeight:"700",fontStyle:"italic",color:DARK,margin:"0",lineHeight:"1"},"Révélation™"));
-  brand.appendChild(el("p",{fontSize:"9px",letterSpacing:"3px",color:GOLD,textTransform:"uppercase",margin:"3px 0 0"},"Maison Isabella"));
-  hd.appendChild(brand);
-  var rt=div({textAlign:"right"});
-  rt.appendChild(el("p",{fontSize:"11px",color:MUT,marginBottom:"4px"},S.userName));
-  rt.appendChild(btnEl("Sair",{background:"none",border:"1px solid "+BOR,color:MUT,fontSize:"10px",width:"auto",padding:"4px 10px",letterSpacing:"0"},function(){
-    sessionStorage.removeItem("rev_user");sessionStorage.removeItem("rev_name");set({user:"",userName:"",screen:"login"});
-  }));
-  hd.appendChild(rt);
-
-  // Overall progress bar
-  var progBar=div({marginBottom:"24px",padding:"16px 20px",background:CARD,borderRadius:"14px",border:"1px solid "+BOR},[
-    div({display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px"},[
-      el("div",{fontSize:"11px",fontWeight:"600",color:DARK},"A tua jornada"),
-      el("div",{fontSize:"11px",color:GOLD,fontWeight:"700"},completedCount+" / "+PHASES.length+" fases")
-    ]),
-    div({height:"4px",background:BOR,borderRadius:"999px",overflow:"hidden"},[
-      div({height:"100%",width:pct+"%",background:"linear-gradient(90deg,"+GOLD+",#DEB96A)",borderRadius:"999px",transition:"width 0.5s"})
-    ]),
-    pct===100?el("p",{fontSize:"11px",color:"#4a8a5a",marginTop:"8px",textAlign:"center",fontStyle:"italic"},"Jornada completa · "+String.fromCharCode(10003)):null
-  ]);
-
-  // Phase cards
-  var cards=div({display:"flex",flexDirection:"column",gap:"10px"});
-  PHASES.forEach(function(ph,i){
-    var done = isPhaseComplete(S.user, ph.id);
-    var prevDone = i===0 || isPhaseComplete(S.user, PHASES[i-1].id);
-    var locked = !prevDone && !done;
-
-    var card=div({
-      background:done?GOLD+"0A":CARD,
-      border:"1px solid "+(done?GOLD+"40":locked?"rgba(197,165,90,0.15)":BOR),
-      borderRadius:"14px",padding:"16px 18px",
-      cursor:locked?"default":"pointer",
-      opacity:locked?"0.55":"1",
-      transition:"all 0.2s",
-      animation:"fadeUp 0.3s ease "+(i*0.05)+"s both"
-    });
-
-    var top=div({display:"flex",alignItems:"center",gap:"12px"});
-    // Phase number badge
-    var badge=div({
-      width:"36px",height:"36px",borderRadius:"10px",
-      background:done?"rgba(74,138,90,0.1)":locked?"rgba(197,165,90,0.08)":ph.cor+"18",
-      border:"1px solid "+(done?"rgba(74,138,90,0.3)":locked?"rgba(197,165,90,0.15)":ph.cor+"40"),
-      display:"flex",alignItems:"center",justifyContent:"center",flexShrink:"0"
-    });
-    badge.appendChild(el("span",{fontSize:"14px",color:done?"#4a8a5a":locked?MUT:ph.cor},done?"✓":ph.icon));
-    top.appendChild(badge);
-
-    var info=div({flex:"1"});
-    var phLabel=el("div",{fontSize:"9px",letterSpacing:"2px",fontWeight:"700",textTransform:"uppercase",color:done?"#4a8a5a":locked?MUT:ph.cor,marginBottom:"2px"},"Fase "+ph.num);
-    var phName=el("div",{fontSize:"14px",fontWeight:"600",color:done?DARK:locked?MUT:DARK},ph.nome);
-    var phSub=el("div",{fontSize:"11px",color:MUT,marginTop:"1px"},ph.sub);
-    info.appendChild(phLabel);info.appendChild(phName);info.appendChild(phSub);
-    top.appendChild(info);
-
-    if(locked){
-      top.appendChild(el("span",{fontSize:"16px",color:MUT,opacity:"0.4"},"🔒"));
-    } else if(!done){
-      top.appendChild(el("span",{fontSize:"12px",color:GOLD},"→"));
-    }
-
-    card.appendChild(top);
-
-    if(!locked){
-      card.addEventListener("mouseenter",function(){if(!done){card.style.borderColor=ph.cor+"60";card.style.transform="translateY(-1px)";}});
-      card.addEventListener("mouseleave",function(){card.style.borderColor=done?GOLD+"40":BOR;card.style.transform="translateY(0)";});
-      card.addEventListener("click",function(){
-        set({screen:ph.id,phase:ph,mode:"intro",form:{},output:"",
-          qFase:"intro",qAi:0,qPi:0,qR1:{},qR2:{},qTop3:[],qDom:null,qSub:null,qTab:"perfil"});
-      });
-    }
-    cards.appendChild(card);
-  });
-
-  return div({minHeight:"100vh",background:BG,padding:"28px 20px 60px"},[
-    div({maxWidth:"560px",margin:"0 auto"},[
-      hd, progBar, cards,
-      el("p",{textAlign:"center",color:MUT,fontSize:"9px",marginTop:"32px",letterSpacing:"3px",textTransform:"uppercase",opacity:"0.4"},"Révélation™ · Maison Isabella · 2026")
-    ])
-  ]);
-}
-
-// ── PHASE SCREENS ─────────────────────────────────────────────────────────────
-function drawPhase(){
-  var ph = S.phase;
-  if(!ph) return drawHome();
-
-  // Phase 5 (DWA link)
-  if(ph.isLink){
-    var lw=div({textAlign:"center",marginBottom:"16px"});lw.appendChild(logoEl(70));
-    return div({minHeight:"100vh",background:BG,display:"flex",alignItems:"center",justifyContent:"center",padding:"24px",animation:"fadeUp 0.3s ease both"},[
-      div({maxWidth:"480px",width:"100%"},[
-        lw,
-        el("p",{fontSize:"9px",letterSpacing:"3px",color:MUT,textTransform:"uppercase",textAlign:"center",marginBottom:"10px"},"Fase 5 · Révélation™"),
-        el("h2",{fontFamily:"'Playfair Display',serif",fontSize:"clamp(24px,5vw,34px)",fontWeight:"700",color:DARK,textAlign:"center",margin:"0 0 8px"},"Académie Digitale™"),
-        el("p",{fontSize:"13px",color:MUT,textAlign:"center",marginBottom:"28px",lineHeight:"1.75"},ph.linkDesc),
-        div({background:CARD,borderRadius:"18px",border:"1px solid "+BOR,padding:"28px",textAlign:"center",boxShadow:"0 4px 24px rgba(26,10,0,0.06)"},[
-          el("p",{fontSize:"13px",color:DARK,marginBottom:"20px",lineHeight:"1.7",fontStyle:"italic"},"Chegaste aqui com a tua identidade definida, o teu posicionamento construído e a tua oferta estruturada. Agora é a implementação."),
-          btnEl(ph.linkText,{marginBottom:"12px"},function(){
-            saveProgress(S.user,ph.id,{done:true});
-            alert("Link da Académie Digitale™ será activado em breve.");
-          }),
-          btnEl("← Voltar",{background:"none",border:"1.5px solid "+BOR,color:MUT,fontSize:"13px"},function(){set({screen:"home"});})
-        ])
-      ])
-    ]);
-  }
-
-  // Phase 2 (Quiz)
-  if(ph.isQuiz){
-    return drawQuiz();
-  }
-
-  // Phases 1, 3, 4 (Form + AI)
-  var done = isPhaseComplete(S.user, ph.id);
-
-  // Header
-  var hd=div({display:"flex",alignItems:"center",gap:"12px",marginBottom:"20px",paddingBottom:"16px",borderBottom:"1px solid "+BOR});
-  hd.appendChild(logoEl(32));
-  var info=div({flex:"1"});
-  info.appendChild(el("div",{fontSize:"9px",letterSpacing:"2px",color:ph.cor,fontWeight:"700",textTransform:"uppercase",marginBottom:"2px"},"Fase "+ph.num+" · Révélation™"));
-  info.appendChild(el("h2",{fontFamily:"'Playfair Display',serif",fontSize:"clamp(16px,3.5vw,22px)",fontWeight:"700",color:DARK,margin:"0"},ph.nome));
-  hd.appendChild(info);
-  hd.appendChild(btnEl("← Início",{background:"none",border:"1px solid "+BOR,color:MUT,fontSize:"11px",width:"auto",padding:"5px 10px",letterSpacing:"0"},function(){set({screen:"home"});}));
-
-  var content;
-
-  // Intro mode
-  if(S.mode==="intro"){
-    content=div({background:CARD,borderRadius:"18px",border:"1px solid "+BOR,padding:"clamp(24px,5vw,36px)",boxShadow:"0 4px 24px rgba(26,10,0,0.06)",animation:"fadeUp 0.3s ease both"},[
-      el("p",{fontSize:"13px",color:MUT,lineHeight:"1.85",marginBottom:"24px"},ph.desc),
-      done?div({padding:"14px",background:"rgba(74,138,90,0.06)",borderRadius:"10px",border:"1px solid rgba(74,138,90,0.2)",marginBottom:"16px"},[
-        el("p",{fontSize:"12px",color:"#4a8a5a",fontWeight:"600"},"✓  Fase concluída — podes rever o resultado ou refazer.")
-      ]):null,
-      div({display:"flex",gap:"10px",flexDirection:"column"},[
-        btnEl(done?"Rever resultado →":"Começar esta fase →",{},function(){
-          if(done){
-            var p=getProgress(S.user);
-            if(p[ph.id]&&p[ph.id].output){set({mode:"result",output:p[ph.id].output});}
-            else{set({mode:"form"});}
-          } else {set({mode:"form"});}
-        }),
-        done?btnEl("Refazer",{background:"none",border:"1.5px solid "+BOR,color:MUT,fontSize:"13px"},function(){set({mode:"form",output:""});}):null
-      ])
-    ]);
-  }
-
-  // Form mode
-  else if(S.mode==="form"){
-    var fields=ph.fields.map(function(f,i){
-      var lbl=document.createElement("label");
-      Object.assign(lbl.style,{display:"block",fontSize:"12px",fontWeight:"600",color:DARK,marginBottom:"7px"});
-      var num=el("span",{color:GOLD,marginRight:"5px",fontSize:"12px"},"");num.textContent=(i+1)+". ";
-      lbl.appendChild(num);lbl.appendChild(document.createTextNode(f.label));
-      if(f.req){var ast=el("span",{color:"#c05050",marginLeft:"2px"},"");ast.textContent="*";lbl.appendChild(ast);}
-
-      var inp;
-      if(f.ta){
-        inp=document.createElement("textarea");
-        Object.assign(inp.style,{width:"100%",padding:"13px 16px",background:BG,border:"1.5px solid "+BOR,borderRadius:"9px",fontSize:"14px",color:DARK,outline:"none",resize:"vertical",fontFamily:"inherit",boxSizing:"border-box",lineHeight:"1.6",minHeight:"90px"});
-        inp.rows=3;inp.placeholder=f.ph||"";inp.value=S.form[f.key]||"";
-        inp.addEventListener("input",function(e){S.form[f.key]=e.target.value;});
-      } else {
-        inp=document.createElement("input");
-        Object.assign(inp.style,{width:"100%",padding:"13px 16px",height:"50px",background:BG,border:"1.5px solid "+BOR,borderRadius:"9px",fontSize:"14px",color:DARK,outline:"none",fontFamily:"inherit",boxSizing:"border-box"});
-        inp.type="text";inp.placeholder=f.ph||"";inp.value=S.form[f.key]||"";
-        inp.addEventListener("input",function(e){S.form[f.key]=e.target.value;});
-      }
-      return div({marginBottom:"20px"},[lbl,inp]);
-    });
-
-    var errEl2=null;
-    if(S.err){errEl2=el("p",{color:"#c05050",fontSize:"13px",background:"rgba(194,80,80,0.06)",padding:"10px 14px",borderRadius:"8px",marginBottom:"14px"},"");errEl2.textContent=S.err;}
-
-    async function gerar(){
-      var miss=ph.fields.filter(function(f){return f.req&&!(S.form[f.key]||"").trim();});
-      if(miss.length){set({err:"Preenche todos os campos obrigatórios."});return;}
-      set({mode:"loading",err:"",output:""});
-      try{
-        var out=await callAPI(ph.sys(),ph.msg(S.form));
-        saveProgress(S.user,ph.id,{done:true,output:out,form:S.form});
-        set({mode:"result",output:out});
-      }catch(e){set({mode:"form",err:"Erro ao gerar. Verifica a ligação e tenta novamente."});}
-    }
-
-    content=div({background:CARD,borderRadius:"18px",border:"1px solid "+BOR,padding:"clamp(20px,4vw,34px)",boxShadow:"0 4px 24px rgba(26,10,0,0.06)"},[
-      ...fields,errEl2,btnEl("Gerar →",{},gerar)
-    ]);
-  }
-
-  // Loading
-  else if(S.mode==="loading"){
-    var svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
-    svg.setAttribute("width","28");svg.setAttribute("height","28");svg.setAttribute("viewBox","0 0 24 24");
-    svg.setAttribute("fill","none");svg.setAttribute("stroke",GOLD);svg.setAttribute("stroke-width","2.5");
-    svg.style.animation="spin 1s linear infinite";svg.style.marginBottom="12px";
-    var path=document.createElementNS("http://www.w3.org/2000/svg","path");
-    path.setAttribute("d","M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83");
-    svg.appendChild(path);
-    content=div({background:CARD,borderRadius:"18px",border:"1px solid "+BOR,padding:"60px 40px",textAlign:"center",boxShadow:"0 4px 24px rgba(26,10,0,0.06)"},[
-      svg,el("p",{color:MUT,fontSize:"14px",fontWeight:"300"},"A gerar o teu resultado…")
-    ]);
-  }
-
-  // Result
-  else if(S.mode==="result"){
-    var cpBtn=btnEl("Copiar",{flex:"1"},function(){
-      (function(){
-      try{
-        navigator.clipboard.writeText(S.output).catch(function(){
-          var ta=document.createElement('textarea');ta.value=S.output;
-          ta.style.position='fixed';ta.style.opacity='0';
-          document.body.appendChild(ta);ta.select();
-          document.execCommand('copy');document.body.removeChild(ta);
-        });
-      }catch(e){
-        var ta=document.createElement('textarea');ta.value=S.output;
-        ta.style.position='fixed';ta.style.opacity='0';
-        document.body.appendChild(ta);ta.select();
-        document.execCommand('copy');document.body.removeChild(ta);
-      }
-    })();
-      cpBtn.textContent="✓ Copiado";cpBtn.style.background="rgba(74,138,90,0.08)";cpBtn.style.color="#4a8a5a";
-      setTimeout(function(){cpBtn.textContent="Copiar";cpBtn.style.background=BTN;cpBtn.style.color="#F5E6C8";},2000);
-    });
-    // Find next phase
-    var phIdx=PHASES.findIndex(function(p){return p.id===ph.id;});
-    var nextPh=PHASES[phIdx+1];
-    var nextBtn=nextPh?btnEl("Fase "+(ph.num+1)+" →",{flex:"1"},function(){
-      set({screen:nextPh.id,phase:nextPh,mode:"intro",form:{},output:"",
-        qFase:"intro",qAi:0,qPi:0,qR1:{},qR2:{},qTop3:[],qDom:null,qSub:null,qTab:"perfil"});
-    }):btnEl("← Início",{flex:"1"},function(){set({screen:"home"});});
-
-    content=div({background:CARD,borderRadius:"18px",border:"1px solid "+BOR,padding:"clamp(20px,4vw,34px)",boxShadow:"0 4px 24px rgba(26,10,0,0.06)"},[
-      div({display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"18px",paddingBottom:"14px",borderBottom:"1px solid "+BOR},[
-        el("div",{fontSize:"10px",letterSpacing:"2px",color:ph.cor,fontWeight:"700",textTransform:"uppercase"},"Resultado · Fase "+ph.num),
-        logoEl(26)
-      ]),
-      mdRender(S.output),
-      div({display:"flex",gap:"10px",marginTop:"22px",paddingTop:"16px",borderTop:"1px solid "+BOR},[cpBtn,nextBtn])
-    ]);
-  }
-
-  return div({minHeight:"100vh",background:BG,padding:"24px 20px 80px"},[
-    div({maxWidth:"640px",margin:"0 auto"},[hd,content])
-  ]);
-}
-
-// ── QUIZ (Phase 2) ────────────────────────────────────────────────────────────
-function drawQuiz(){
-  var ph=S.phase;
-
-  if(S.qFase==="intro"){
-    var lw=div({textAlign:"center",marginBottom:"16px"});lw.appendChild(logoEl(72));
-    return div({minHeight:"100vh",background:BG,display:"flex",alignItems:"center",justifyContent:"center",padding:"24px",animation:"fadeUp 0.3s ease both"},[
-      div({maxWidth:"480px",width:"100%"},[
-        lw,
-        el("p",{fontSize:"9px",letterSpacing:"3px",color:MUT,textTransform:"uppercase",textAlign:"center",marginBottom:"10px"},"Fase 2 · Révélation™"),
-        el("h2",{fontFamily:"'Playfair Display',serif",fontSize:"clamp(22px,5vw,34px)",fontWeight:"700",color:DARK,textAlign:"center",margin:"0 0 8px"},"Descoberta Arquetípica"),
-        el("p",{fontSize:"13px",color:MUT,textAlign:"center",marginBottom:"24px",lineHeight:"1.75"},"12 arquetipos · subtipos · branding emocional completo"),
-        div({display:"flex",gap:"10px",justifyContent:"center"},[
-          btnEl("← Início",{background:"none",border:"1px solid "+BOR,color:MUT,width:"auto",padding:"12px 20px",letterSpacing:"0"},function(){set({screen:"home"});}),
-          btnEl("Iniciar →",{width:"auto",padding:"14px 32px"},function(){set({qFase:"f1"});})
-        ])
-      ])
-    ]);
-  }
-
-  if(S.qFase==="f1"){
-    var ak=ARQS_ORDER[S.qAi],ad=AD[ak]||{};
-    var done2=Object.values(S.qR1).reduce(function(s,v){return s+v.length;},0);
-    var pct2=Math.round((done2/(ARQS_ORDER.length*15))*100);
-    var q=(ad.perguntas||[])[S.qPi]||"";
-    var hd2=div({display:"flex",alignItems:"center",gap:"12px",marginBottom:"12px"});
-    hd2.appendChild(logoEl(30));hd2.appendChild(div({flex:"1"},pbar(pct2,(ad.nome||ak)+" · "+(S.qPi+1)+"/"+(ad.perguntas||[]).length)));
-    var opts=div();
-    OF1.forEach(function(op){
-      opts.appendChild(optBtn(op.label,function(){
-        var ak2=ARQS_ORDER[S.qAi],nr=Object.assign({},S.qR1);
-        nr[ak2]=(nr[ak2]||[]).concat(op.val);
-        var ad2=AD[ak2]||{};
-        if(S.qPi+1<(ad2.perguntas||[]).length){set({qR1:nr,qPi:S.qPi+1});}
-        else if(S.qAi+1<ARQS_ORDER.length){set({qR1:nr,qAi:S.qAi+1,qPi:0});}
-        else{
-          var pts=ARQS_ORDER.map(function(k){var d=AD[k]||{},tot=(nr[k]||[]).reduce(function(a,b){return a+b;},0);return{key:k,nome:d.nome||k,pct:Math.round((tot/((d.perguntas||[]).length*15))*100)};}).sort(function(a,b){return b.pct-a.pct;});
-          set({qR1:nr,qTop3:pts.slice(0,3),qDom:pts[0],qFase:"f2"});
-        }
-      }));
-    });
-    return div({minHeight:"100vh",background:BG,padding:"20px 20px 80px"},[
-      div({maxWidth:"600px",margin:"0 auto"},[hd2,
-        div({background:CARD,borderRadius:"18px",border:"1px solid "+BOR,padding:"clamp(22px,5vw,38px)",boxShadow:"0 4px 24px rgba(26,10,0,0.06)"},[
-          el("div",{fontSize:"10px",letterSpacing:"2.5px",color:GOLD,fontWeight:"700",textTransform:"uppercase",marginBottom:"12px"},"Fase 2 · "+(ad.nome||ak)),
-          el("p",{fontFamily:"'Playfair Display',serif",fontSize:"clamp(15px,3vw,19px)",color:DARK,lineHeight:"1.65",margin:"0 0 26px"},'"'+q+'"'),
-          opts
-        ])
-      ])
-    ]);
-  }
-
-  if(S.qFase==="f2"){
-    var dom=S.qDom,subs=(dom&&AD[dom.key]&&AD[dom.key].subtipos)||[];
-    var allQ=[];subs.forEach(function(s){(s.afirmacoes||[]).forEach(function(a){allQ.push({sub:s.nome,txt:a});});});
-    var f2i=Object.values(S.qR2).reduce(function(s,v){return s+v.length;},0);
-    var q2=allQ[f2i];
-    var pct3=allQ.length>0?Math.round((f2i/allQ.length)*100):0;
-    function ansF2(val){
-      if(!q2)return;
-      var nf2=Object.assign({},S.qR2);nf2[q2.sub]=(nf2[q2.sub]||[]).concat(val);
-      if(f2i+1>=allQ.length){
-        var ponts=subs.map(function(s){var tot=(nf2[s.nome]||[]).reduce(function(a,b){return a+b;},0);return Object.assign({},s,{pct:Math.round((tot/((s.afirmacoes||[]).length*10))*100)});}).sort(function(a,b){return b.pct-a.pct;});
-        var result={done:true,dom:S.qDom,sub:ponts[0],top3:S.qTop3};
-        saveProgress(S.user,"fase2",result);
-        set({qR2:nf2,qSub:ponts[0],qFase:"resultado"});
-      }else{set({qR2:nf2});}
-    }
-    var opts2=div();OF2.forEach(function(op){opts2.appendChild(optBtn(op.label,function(){ansF2(op.val);}));});
-    var badges=div({display:"flex",gap:"8px",marginBottom:"14px",flexWrap:"wrap"});
-    (S.qTop3||[]).forEach(function(t,i){var b=div({padding:"4px 12px",borderRadius:"999px",background:i===0?GOLD+"18":CARD,border:"1px solid "+(i===0?GOLD+"50":BOR)});b.appendChild(el("span",{fontSize:"9px",color:GOLD,fontWeight:"700",letterSpacing:"1.5px",textTransform:"uppercase"},i===0?"Dom ":i===1?"2º ":"3º "));b.appendChild(el("span",{fontSize:"11px",color:MUT},t.nome+" · "+t.pct+"%"));badges.appendChild(b);});
-    return div({minHeight:"100vh",background:BG,padding:"20px 20px 80px"},[
-      div({maxWidth:"600px",margin:"0 auto"},[
-        div({display:"flex",alignItems:"center",gap:"12px",marginBottom:"12px"},[logoEl(30),div({flex:"1"},pbar(pct3,"Fase 2 · Subtipos · "+(dom?dom.nome:"")))]),
-        badges,
-        q2?div({background:CARD,borderRadius:"18px",border:"1px solid "+BOR,padding:"clamp(22px,5vw,38px)",boxShadow:"0 4px 24px rgba(26,10,0,0.06)"},[
-          el("div",{fontSize:"10px",letterSpacing:"2.5px",color:GOLD,fontWeight:"700",textTransform:"uppercase",marginBottom:"12px"},"Subtipo · "+q2.sub),
-          el("p",{fontFamily:"'Playfair Display',serif",fontSize:"clamp(15px,3vw,19px)",color:DARK,lineHeight:"1.65",margin:"0 0 26px"},'"'+q2.txt+'"'),
-          opts2
-        ]):null
-      ])
-    ]);
-  }
-
-  if(S.qFase==="resultado"){
-    var dom2=S.qDom,dDad=AD[dom2?dom2.key:""]||{};
-    var tabs=["perfil","branding","subtipos","top3","palavras"],TL={perfil:"Perfil",branding:"Branding",subtipos:"Subtipos",top3:"Top 3",palavras:"Palavras"};
-    var tabBar=div({display:"flex",background:CARD,borderRadius:"12px",padding:"4px",border:"1px solid "+BOR,marginBottom:"12px",overflowX:"auto",gap:"2px"});
-    tabs.forEach(function(t){var tb=el("button",{flex:"0 0 auto",padding:"8px 12px",borderRadius:"9px",border:"none",background:S.qTab===t?GOLD+"18":"transparent",color:S.qTab===t?DARK:MUT,fontSize:"11px",fontWeight:S.qTab===t?"700":"400",cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"},TL[t]);tb.addEventListener("click",function(){set({qTab:t});});tabBar.appendChild(tb);});
-    var tc=div();var t=S.qTab;
-    if(t==="perfil"){[{l:"Desejo",v:dDad.desejo},{l:"Meta",v:dDad.meta},{l:"Medo",v:dDad.medo},{l:"Estratégia",v:dDad.estrategia},{l:"Armadilha",v:dDad.armadilha},{l:"Dons",v:dDad.dons}].filter(function(x){return x.v;}).forEach(function(item){var row=div({marginBottom:"12px",paddingBottom:"12px",borderBottom:"1px solid "+BOR});row.appendChild(el("div",{fontSize:"10px",letterSpacing:"2px",color:GOLD,fontWeight:"700",textTransform:"uppercase",marginBottom:"3px"},item.l));row.appendChild(el("p",{fontSize:"13px",color:DARK,lineHeight:"1.7",margin:"0"},item.v));tc.appendChild(row);});}
-    else if(t==="branding"){tc.appendChild(el("div",{fontSize:"10px",letterSpacing:"2px",color:GOLD,fontWeight:"700",textTransform:"uppercase",marginBottom:"12px"},"Branding Emocional"));var tCard=div({padding:"14px 18px",borderRadius:"12px",background:GOLD+"0A",border:"1px solid "+GOLD+"30",marginBottom:"16px"});tCard.appendChild(el("div",{fontSize:"9px",letterSpacing:"2px",color:GOLD,fontWeight:"700",textTransform:"uppercase",marginBottom:"5px"},"Tagline"));tCard.appendChild(el("p",{fontFamily:"'Playfair Display',serif",fontSize:"17px",color:DARK,fontStyle:"italic",margin:"0"},'"'+(dDad.tagline||"")+'"'));tc.appendChild(tCard);tc.appendChild(el("div",{fontSize:"10px",letterSpacing:"2px",color:MUT,fontWeight:"700",textTransform:"uppercase",marginBottom:"10px"},"Frases da Marca"));(dDad.frases||[]).forEach(function(f,i){var fc=div({padding:"10px 14px",marginBottom:"8px",borderRadius:"10px",border:"1px solid "+(i===0?GOLD+"35":BOR),background:i===0?GOLD+"08":BG});fc.appendChild(el("p",{fontSize:"13px",color:DARK,fontStyle:"italic",margin:"0",lineHeight:"1.6"},'"'+f+'"'));tc.appendChild(fc);});}
-    else if(t==="subtipos"){tc.appendChild(el("div",{fontSize:"10px",letterSpacing:"2px",color:GOLD,fontWeight:"700",textTransform:"uppercase",marginBottom:"6px"},"Subtipos de "+(dDad.nome||"")));tc.appendChild(el("p",{fontSize:"12px",color:MUT,marginBottom:"14px"},"Dominante: "+(S.qSub?S.qSub.nome:"")));(dDad.subtipos||[]).forEach(function(s){var isD=s.nome===(S.qSub?S.qSub.nome:"");var sc=div({marginBottom:"10px",padding:"12px 14px",borderRadius:"12px",border:"1.5px solid "+(isD?GOLD+"50":BOR),background:isD?GOLD+"08":BG});var sr=div({display:"flex",alignItems:"center",gap:"8px",marginBottom:"4px"});if(isD){var badge=el("span",{fontSize:"9px",letterSpacing:"2px",color:GOLD,fontWeight:"700",textTransform:"uppercase",background:GOLD+"18",padding:"2px 8px",borderRadius:"999px"},"Teu subtipo");sr.appendChild(badge);}sr.appendChild(el("div",{fontSize:"13px",fontWeight:isD?"700":"400",color:isD?DARK:MUT},s.nome));sc.appendChild(sr);sc.appendChild(el("p",{fontSize:"12px",color:isD?DARK+"CC":MUT,lineHeight:"1.65",margin:"0"},(s.desc||"").substring(0,200)));tc.appendChild(sc);});}
-    else if(t==="top3"){tc.appendChild(el("div",{fontSize:"10px",letterSpacing:"2px",color:MUT,fontWeight:"700",textTransform:"uppercase",marginBottom:"14px"},"Os teus 3 Arquetipos"));var labs=["Dominante","Secundário","Terciário"];(S.qTop3||[]).forEach(function(t2,i){var row=div({marginBottom:"10px",padding:"14px 16px",borderRadius:"14px",border:"1.5px solid "+(i===0?GOLD+"50":BOR),background:i===0?GOLD+"08":BG});var top2=div({display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"8px"});var left=div();left.appendChild(el("div",{fontSize:"9px",letterSpacing:"2px",color:GOLD,fontWeight:"700",textTransform:"uppercase",marginBottom:"2px"},labs[i]));left.appendChild(el("div",{fontFamily:"'Playfair Display',serif",fontSize:"18px",fontWeight:"700",color:DARK},t2.nome));top2.appendChild(left);top2.appendChild(el("div",{fontSize:"18px",fontWeight:"700",color:GOLD},t2.pct+"%"));row.appendChild(top2);var barEl2=div({height:"3px",background:BOR,borderRadius:"999px",overflow:"hidden"});barEl2.appendChild(div({height:"100%",width:t2.pct+"%",background:"linear-gradient(90deg,"+GOLD+",#DEB96A)",borderRadius:"999px"}));row.appendChild(barEl2);tc.appendChild(row);});}
-    else if(t==="palavras"){tc.appendChild(el("div",{fontSize:"10px",letterSpacing:"2px",color:GOLD,fontWeight:"700",textTransform:"uppercase",marginBottom:"12px"},"Vocabulário da Marca"));var pw=div({display:"flex",flexWrap:"wrap",gap:"8px",marginBottom:"20px"});(dDad.palavras||[]).forEach(function(p,i){var badge=document.createElement("span");Object.assign(badge.style,{padding:"5px 12px",borderRadius:"999px",border:"1px solid "+(i<5?GOLD+"50":BOR),background:i<5?GOLD+"10":CARD,fontSize:"12px",color:i<5?DARK:MUT,fontWeight:i<5?"600":"400"});badge.textContent=p;pw.appendChild(badge);});tc.appendChild(pw);}
-
-    var lc=div({textAlign:"center",marginBottom:"12px"});lc.appendChild(logoEl(60));
-    var nextPh2=PHASES[2]; // Fase 3
-    return div({minHeight:"100vh",background:BG,padding:"24px 20px 80px",animation:"fadeUp 0.3s ease both"},[
-      div({maxWidth:"640px",margin:"0 auto"},[
-        div({textAlign:"center",marginBottom:"20px",paddingBottom:"18px",borderBottom:"1px solid "+BOR},[lc,
-          el("p",{fontSize:"9px",letterSpacing:"3px",color:MUT,textTransform:"uppercase",marginBottom:"6px"},"Révélation™ · Perfil Arquetípico"),
-          el("h2",{fontFamily:"'Playfair Display',serif",fontSize:"clamp(20px,5vw,28px)",fontWeight:"700",color:DARK,margin:"0 0 3px"},dDad.nome||""),
-          S.qSub?el("p",{fontSize:"12px",color:GOLD,fontWeight:"600",margin:"3px 0"},"Subtipo: "+S.qSub.nome):null,
-          el("p",{fontSize:"11px",color:MUT,fontStyle:"italic",margin:"3px 0 0"},'"'+(dDad.tagline||"")+'"')
-        ]),
-        tabBar,
-        div({background:CARD,borderRadius:"18px",border:"1px solid "+BOR,padding:"clamp(16px,4vw,28px)",boxShadow:"0 4px 24px rgba(26,10,0,0.06)"},tc),
-        div({display:"flex",gap:"10px",marginTop:"12px"},[
-          btnEl("Reiniciar",{flex:"1",background:"none",border:"1.5px solid "+BOR,color:MUT,fontSize:"12px"},function(){set({qFase:"intro",qAi:0,qPi:0,qR1:{},qR2:{},qTop3:[],qDom:null,qSub:null,qTab:"perfil"});}),
-          btnEl("Fase 3 →",{flex:"1",fontSize:"12px"},function(){set({screen:"fase3",phase:nextPh2,mode:"intro",form:{},output:""});})
-        ])
-      ])
-    ]);
-  }
-  return div();
-}
-
-// ── MAIN ──────────────────────────────────────────────────────────────────────
-function draw(){
-  var app=document.getElementById("app");
-  app.innerHTML="";
-  var view;
-  if(!S.user)view=drawLogin();
-  else if(S.screen==="home")view=drawHome();
-  else if(S.screen==="fase2"||S.phase&&S.phase.isQuiz)view=drawQuiz();
-  else if(S.phase)view=drawPhase();
-  else view=drawHome();
-  app.appendChild(view);
-}
-
-if(S.user)S.screen="home";
-draw();
+window.AD = ARQUETIPOS_DATA;
 </script>
 </body>
 </html>
