@@ -1,0 +1,87 @@
+═══════════════════════════════════════════════════════
+  MAISON ISABELLA — INSTRUÇÕES DE INSTALAÇÃO
+═══════════════════════════════════════════════════════
+
+FICHEIROS INCLUÍDOS:
+─────────────────────
+Site público (carrega para public_html/):
+  • maison-isabella-website.html
+  • la-maison.html
+  • revelation-vendas.html
+  • academia-vendas.html
+  • coffret-vendas.html
+  • collection-vendas.html
+  • directrice.html
+  • maison-isabella-plataforma.html  (versão estática de referência)
+
+Sistema de membros (carrega para public_html/acesso/):
+  • config.php        ← PREENCHE PRIMEIRO
+  • instalar.php      ← corre uma vez, depois apaga
+  • login.php
+  • plataforma.php
+  • webhook.php
+
+═══════════════════════════════════════════════════════
+  PASSO A PASSO
+═══════════════════════════════════════════════════════
+
+1. HOSTINGER — Após comprar o plano Business:
+   • hPanel → Bases de dados → Criar base de dados MySQL
+   • Anota: nome da BD, utilizador e password
+
+2. config.php — Preenche com os teus dados:
+   • DB_NAME, DB_USER, DB_PASS (da base de dados)
+   • STRIPE_SECRET_KEY (em dashboard.stripe.com → Developers → API keys)
+   • STRIPE_WEBHOOK_SECRET (após criar o webhook no Stripe)
+   • MAIL_FROM (o teu email profissional)
+   • SITE_URL (https://andreiarodrigues.com)
+   • Os IDs dos produtos Stripe (após criar os produtos)
+
+3. CARREGAR FICHEIROS:
+   • Todos os ficheiros HTML → public_html/
+   • A pasta /acesso/ com os ficheiros PHP → public_html/acesso/
+
+4. INSTALAR A BASE DE DADOS:
+   • Visita https://andreiarodrigues.com/acesso/instalar.php
+   • Deverás ver: "Base de dados instalada com sucesso!"
+   • APAGA imediatamente o ficheiro instalar.php do servidor
+
+5. STRIPE — Configurar Webhook:
+   • dashboard.stripe.com → Developers → Webhooks → Add endpoint
+   • URL: https://andreiarodrigues.com/acesso/webhook.php
+   • Events: checkout.session.completed
+   • Copia o "Signing secret" → coloca em STRIPE_WEBHOOK_SECRET no config.php
+
+6. STRIPE — Criar Payment Links:
+   • Cria um produto para cada item (Révélation™, Academia, Coffret™, Collection™)
+   • Gera um Payment Link para cada um
+   • Substitui os links href="#" nas páginas de venda
+
+7. TESTAR:
+   • Vai a https://andreiarodrigues.com/acesso/login.php
+   • Deves ver a página de login da Maison Isabella
+
+═══════════════════════════════════════════════════════
+  COMO FUNCIONA
+═══════════════════════════════════════════════════════
+
+Cliente paga no Stripe
+  ↓
+Stripe envia notificação para webhook.php
+  ↓
+Sistema cria conta com o email da cliente
+  ↓
+Gera password automática
+  ↓
+Envia email com credenciais e link de acesso
+  ↓
+Cliente entra em /acesso/login.php
+  ↓
+Vê apenas os produtos que comprou
+  ↓
+Produtos bloqueados mostram opção de compra
+
+═══════════════════════════════════════════════════════
+  DÚVIDAS
+═══════════════════════════════════════════════════════
+Contacto: Claude (nova sessão com os ficheiros PHP)
